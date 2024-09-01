@@ -1,0 +1,78 @@
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inheri t;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #1f1f29;
+  color: #e2d9f3;
+}
+
+header {
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border: 1px solid white; */
+}
+
+footer {
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border: 1px solid white; */
+}
+
+nav {
+  width: calc(15vw - 5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* border: 1px solid white; */
+}
+
+main {
+  height: 100%;
+  display: flex;
+}
+
+article {
+  width: calc(85vw - 10px);
+  border: 1px solid pink;
+}
+
+a {
+  text-decoration: none;
+  color: #a98eda;
+}
+
+nav li {
+  margin: 30px auto;
+}
+
+.error-stranica {
+  /* border: 1px solid white; */
+}
+
+.root-stranica {
+  height: calc(100vh - 5px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* border: 1px solid white; */
+}
+
+.active {
+  color: #42c16f;
+}
+
+.pending {
+  color: #c16f42;
+}

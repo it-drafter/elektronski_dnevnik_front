@@ -1,35 +1,95 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import createStore from 'react-auth-kit/createStore';
+import AuthProvider from 'react-auth-kit';
+import RequireAuth from '@auth-kit/react-router/RequireAuth';
+
+import GlobalContext from './context/global-context';
+import ErrorStranica from './pages/ErrorStranica';
+import RootStranica from './pages/RootStranica';
+import Pocetna from './pages/Pocetna';
+import Predmeti from './pages/Predmeti';
+import PredmetiCss from './pages/PredmetiCss';
+import Ucenici from './pages/Ucenici';
+import Odjava from './pages/Odjava';
+import InfoPrijava from './pages/InfoPrijava';
+
+const authStore = createStore({
+  authName: '_auth',
+  authType: 'localstorage',
+  // cookieDomain: window.location.hostname,
+  // cookieSecure: window.location.protocol === 'http:',
+});
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <RootStranica />,
+    errorElement: (
+      <RootStranica>
+        <ErrorStranica />
+      </RootStranica>
+    ),
+    children: [
+      {
+        index: true,
+        element: <Pocetna />,
+      },
+      {
+        path: 'infoprijava',
+        element: <InfoPrijava />,
+      },
+      {
+        path: 'predmeti',
+        element: (
+          <RequireAuth fallbackPath={'/infoprijava'}>
+            <Predmeti />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: 'predmeticss',
+        element: (
+          <RequireAuth fallbackPath={'/infoprijava'}>
+            <PredmetiCss />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: 'ucenici',
+        element: (
+          <RequireAuth fallbackPath={'/infoprijava'}>
+            <Ucenici />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: 'odjava',
+        element: (
+          <RequireAuth fallbackPath={'/infoprijava'}>
+            <Odjava />
+          </RequireAuth>
+        ),
+      },
+    ],
+  },
+]);
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <AuthProvider store={authStore}>
+      <GlobalContext.Provider
+        value={{
+          isLoggedInValue: isLoggedIn,
+          setIsLoggedInFn: setIsLoggedIn,
+        }}
+      >
+        <RouterProvider router={router} />
+      </GlobalContext.Provider>
+    </AuthProvider>
+  );
 }
 
-export default App
+export default App;
