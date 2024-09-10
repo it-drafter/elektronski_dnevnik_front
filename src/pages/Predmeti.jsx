@@ -1,5 +1,5 @@
 const Predmeti = () => {
-  return <article>Predmeti</article>;
+  return <section>Predmeti</section>;
 };
 
 export default Predmeti;

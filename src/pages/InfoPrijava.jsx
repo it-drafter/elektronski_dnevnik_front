@@ -1,6 +1,6 @@
 const InfoPrijava = () => {
   return (
-    <article>Morate biti ulogovani da biste pristupili ovoj stranici!</article>
+    <section>Morate biti ulogovani da biste pristupili ovoj stranici!</section>
   );
 };
 

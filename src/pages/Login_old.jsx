@@ -21,7 +21,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(username, password);
+    // console.log(username, password);
 
     try {
       const response = await axios.post(
@@ -31,18 +31,18 @@ const Login = () => {
       const { user, token } = response.data;
 
       // Store the tokens in localStorage or secure cookie for later use
-      console.log('response.data.user:', user);
-      console.log('response.data.token:', token);
+      // console.log('response.data.user:', user);
+      // console.log('response.data.token:', token);
       // localStorage.setItem('user', response.data.user);
       // localStorage.setItem('token', response.data.token);
 
-      console.log(response.data);
+      // console.log(response.data);
 
       setUsername('');
       setPassword('');
       setSuccess(true);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       // if (!err?.response) {
       //   setErrMsg('No Server Response');
       // } else if (err.response?.status === 400) {

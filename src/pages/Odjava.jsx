@@ -1,5 +1,5 @@
 const Odjava = () => {
-  return <article>Odjava</article>;
+  return <section>Odjava</section>;
 };
 
 export default Odjava;

@@ -5,11 +5,11 @@ const ErrorStranica = () => {
   console.error(error);
 
   return (
-    <article>
+    <section>
       <h1>Ooo ne!</h1>
       <p>Došlo je do greške.</p>
       <p>{error.statusText || error.message}</p>
-    </article>
+    </section>
   );
 };
 

@@ -1,5 +1,5 @@
 const Ucenici = () => {
-  return <article>Ucenici</article>;
+  return <section>Ucenici</section>;
 };
 
 export default Ucenici;

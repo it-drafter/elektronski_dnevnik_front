@@ -2,44 +2,123 @@
 // Iskljucen ESLint jer ne zna sta je to props.children!
 
 import { Outlet, NavLink } from 'react-router-dom';
+import { useContext } from 'react';
+import GlobalContext from '../context/global-context';
 
 import '../css/cssreset.css';
 import '../css/styles.css';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import {
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Typography,
+} from '@mui/material';
+import { deepPurple, orange, grey } from '@mui/material/colors';
+
+const navStyle = {
+  borderRadius: '50%',
+  backgroundColor: deepPurple[500],
+  color: grey['A100'],
+  '&.active': {
+    backgroundColor: orange[900],
+  },
+  '&:hover': {
+    backgroundColor: grey[800],
+  },
+};
+
+const fontFamily = {
+  fontFamily: 'cursive',
+};
 
 const RootStranica = ({ children }) => {
+  const globalCtx = useContext(GlobalContext);
+
   return (
     <div className='root-stranica'>
-      <header>ELEKTRONSKI DNEVNIK</header>
+      <Header />
       <main>
         <nav>
-          <ul>
-            <li>
-              <NavLink
-                to={'/'}
-                className={({ isActive, isPending }) =>
-                  isActive ? 'active' : isPending ? 'pending' : ''
-                }
-              >
-                Pocetna
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to={'predmeti'}>Predmeti</NavLink>
-            </li>
-            <li>
-              <NavLink to={'predmeticss'}>Predmeti CSS</NavLink>
-            </li>
-            <li>
-              <NavLink to={'ucenici'}>Ucenici</NavLink>
-            </li>
-            <li>
+          <List>
+            <ListItem>
+              <ListItemButton component={NavLink} to={'/'} sx={navStyle}>
+                <ListItemText
+                  primary={<Typography style={fontFamily}>Početna</Typography>}
+                />
+              </ListItemButton>
+            </ListItem>
+
+            {globalCtx.isLoggedInValue && (
+              <ListItem>
+                <ListItemButton
+                  component={NavLink}
+                  to={'predmeti'}
+                  sx={navStyle}
+                >
+                  <ListItemText
+                    primary={
+                      <Typography style={fontFamily}>Predmeti</Typography>
+                    }
+                    secondary={
+                      <Typography
+                        style={{ fontFamily: 'cursive', fontSize: '0.8rem' }}
+                      >
+                        MUI
+                      </Typography>
+                    }
+                  />
+                </ListItemButton>
+              </ListItem>
+            )}
+            {globalCtx.isLoggedInValue && (
+              <ListItem>
+                <ListItemButton
+                  component={NavLink}
+                  to={'predmetipurecss'}
+                  sx={navStyle}
+                >
+                  <ListItemText
+                    primary={
+                      <Typography style={fontFamily}>Predmeti</Typography>
+                    }
+                    secondary={
+                      <Typography
+                        style={{ fontFamily: 'cursive', fontSize: '0.8rem' }}
+                      >
+                        Pure CSS
+                      </Typography>
+                    }
+                  />
+                </ListItemButton>
+              </ListItem>
+            )}
+            {globalCtx.isLoggedInValue && (
+              <ListItem>
+                <ListItemButton
+                  component={NavLink}
+                  to={'ucenici'}
+                  sx={navStyle}
+                >
+                  <ListItemText
+                    primary={
+                      <Typography style={fontFamily}>Učenici</Typography>
+                    }
+                  />
+                </ListItemButton>
+              </ListItem>
+            )}
+            {/* <li>
               <NavLink to={'odjava'}>Odjava</NavLink>
-            </li>
-          </ul>
+            </li> */}
+          </List>
         </nav>
+
         {children ?? <Outlet />}
       </main>
-      <footer>Design &amp; code: Ivan Tančik</footer>
+      <Footer />
     </div>
   );
 };
