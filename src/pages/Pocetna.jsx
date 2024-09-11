@@ -6,6 +6,8 @@ import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
 import useSignIn from 'react-auth-kit/hooks/useSignIn';
 import { postPrijava } from '../util/http';
 import GlobalContext from '../context/global-context';
+import { Button } from '@mui/material';
+import { deepPurple } from '@mui/material/colors';
 // import GlobalContext from '../context/global-context';
 
 const Pocetna = () => {
@@ -42,7 +44,7 @@ const Pocetna = () => {
 
       // console.log(response.user, response.token);
 
-      const { user, token } = response.data;
+      const { user, token, rola } = response.data;
 
       signIn({
         auth: {
@@ -57,6 +59,7 @@ const Pocetna = () => {
       });
 
       globalCtx.setIsLoggedInFn(true);
+      globalCtx.setRolaKorisnikaFn(rola);
 
       setUsername('');
       setPassword('');
@@ -76,13 +79,34 @@ const Pocetna = () => {
   };
 
   if (errorMsg) {
-    return <p>Greška: {errorMsg}</p>;
+    return (
+      <div>
+        <p>Greška: {errorMsg}</p>
+
+        <Button
+          variant='outlined'
+          onClick={() => {
+            setErrorMsg(null);
+          }}
+          sx={{
+            color: deepPurple[300],
+            fontFamily: 'cursive',
+            mt: '20px',
+          }}
+        >
+          Nazad
+        </Button>
+      </div>
+    );
   }
 
   return (
     <section>
       {!globalCtx.isLoggedInValue && <p>Pocetna - korisnik NIJE prijavljen.</p>}
       {globalCtx.isLoggedInValue && <p>Dobrodošli, {auth?.name} !</p>}
+      {globalCtx.isLoggedInValue && (
+        <p>Vaša rola: {globalCtx.rolaKorisnikaValue}</p>
+      )}
 
       {/* <p>{authHeader}</p> */}
 

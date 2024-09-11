@@ -109,6 +109,7 @@ const router = createBrowserRouter([
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(getToken() !== null);
+  const [rolaKorisnika, setRolaKorisnika] = useState('');
 
   useEffect(() => {
     const doTheHandshake = async () => {
@@ -130,6 +131,8 @@ const App = () => {
         value={{
           isLoggedInValue: isLoggedIn,
           setIsLoggedInFn: setIsLoggedIn,
+          rolaKorisnikaValue: rolaKorisnika,
+          setRolaKorisnikaFn: setRolaKorisnika,
         }}
       >
         <RouterProvider router={router} />

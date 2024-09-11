@@ -28,8 +28,8 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 20px;
-  margin-top: 20px;
+  margin-bottom: 40px;
+  margin-top: 30px;
   /* border: 1px solid white; */
 }
 
@@ -92,4 +92,9 @@ nav li {
 
 ::placeholder {
   color: #ede7f6;
+}
+
+.error-page-message {
+  margin-top: 20px;
+  margin-bottom: 60px;
 }

@@ -95,21 +95,23 @@ const RootStranica = ({ children }) => {
                 </ListItemButton>
               </ListItem>
             )}
-            {globalCtx.isLoggedInValue && (
-              <ListItem>
-                <ListItemButton
-                  component={NavLink}
-                  to={'ucenici'}
-                  sx={navStyle}
-                >
-                  <ListItemText
-                    primary={
-                      <Typography style={fontFamily}>Učenici</Typography>
-                    }
-                  />
-                </ListItemButton>
-              </ListItem>
-            )}
+            {globalCtx.isLoggedInValue &&
+              (globalCtx.rolaKorisnikaValue === 'ROLA_ADMINISTRATOR' ||
+                globalCtx.rolaKorisnikaValue === 'ROLA_NASTAVNIK') && (
+                <ListItem>
+                  <ListItemButton
+                    component={NavLink}
+                    to={'ucenici'}
+                    sx={navStyle}
+                  >
+                    <ListItemText
+                      primary={
+                        <Typography style={fontFamily}>Učenici</Typography>
+                      }
+                    />
+                  </ListItemButton>
+                </ListItem>
+              )}
             {/* <li>
               <NavLink to={'odjava'}>Odjava</NavLink>
             </li> */}

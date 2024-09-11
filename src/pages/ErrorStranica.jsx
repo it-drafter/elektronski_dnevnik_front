@@ -7,8 +7,8 @@ const ErrorStranica = () => {
   return (
     <section>
       <h1>Ooo ne!</h1>
-      <p>Došlo je do greške.</p>
-      <p>{error.statusText || error.message}</p>
+      <p className='error-page-message'>Došlo je do greške.</p>
+      <p className='error-page-message'>{error.statusText || error.message}</p>
     </section>
   );
 };
