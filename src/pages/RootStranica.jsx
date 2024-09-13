@@ -1,9 +1,9 @@
-/* eslint-disable */
 // Iskljucen ESLint jer ne zna sta je to props.children!
 
 import { Outlet, NavLink } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import GlobalContext from '../context/global-context';
+import { CircularProgress, Box } from '@mui/material';
 
 import '../css/cssreset.css';
 import '../css/styles.css';
@@ -17,6 +17,8 @@ import {
   Typography,
 } from '@mui/material';
 import { deepPurple, orange, grey } from '@mui/material/colors';
+import { postPrijava } from '../util/http';
+import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 
 const navStyle = {
   borderRadius: '50%',
@@ -36,6 +38,47 @@ const fontFamily = {
 
 const RootStranica = ({ children }) => {
   const globalCtx = useContext(GlobalContext);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const auth = useAuthUser();
+
+  useEffect(() => {
+    if (globalCtx.isLoggedInValue) {
+      const doTheHandshake = async () => {
+        try {
+          await postPrijava('fakeuser', 'fakepassword');
+        } catch (err) {
+          if (err?.status === 401) {
+            setIsLoading(false);
+          } else {
+            setError(err);
+          }
+        }
+      };
+
+      doTheHandshake();
+    } else {
+      setIsLoading(false);
+    }
+  }, []);
+
+  if (error) {
+    return (
+      <div className='whole-page-flex-container'>
+        Server je trenutno nedostupan. Molimo pokušajte kasnije.
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <div className='whole-page-flex-container'>
+        <Box sx={{ display: 'flex' }}>
+          <CircularProgress />
+        </Box>
+      </div>
+    );
+  }
 
   return (
     <div className='root-stranica'>
@@ -96,8 +139,8 @@ const RootStranica = ({ children }) => {
               </ListItem>
             )}
             {globalCtx.isLoggedInValue &&
-              (globalCtx.rolaKorisnikaValue === 'ROLA_ADMINISTRATOR' ||
-                globalCtx.rolaKorisnikaValue === 'ROLA_NASTAVNIK') && (
+              (auth?.role === 'ROLA_ADMINISTRATOR' ||
+                auth?.role === 'ROLA_NASTAVNIK') && (
                 <ListItem>
                   <ListItemButton
                     component={NavLink}
@@ -112,9 +155,6 @@ const RootStranica = ({ children }) => {
                   </ListItemButton>
                 </ListItem>
               )}
-            {/* <li>
-              <NavLink to={'odjava'}>Odjava</NavLink>
-            </li> */}
           </List>
         </nav>
 

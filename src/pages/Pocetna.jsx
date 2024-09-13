@@ -1,48 +1,49 @@
-// import { useContext } from 'react';
 import { useRef, useState, useEffect, useContext } from 'react';
-// import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
-import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
 import useSignIn from 'react-auth-kit/hooks/useSignIn';
-import { postPrijava } from '../util/http';
+import { getRukovanje, postPrijava } from '../util/http';
 import GlobalContext from '../context/global-context';
-import { Button } from '@mui/material';
+import { Box, Button, CircularProgress } from '@mui/material';
 import { deepPurple } from '@mui/material/colors';
-// import GlobalContext from '../context/global-context';
+import { getToken } from '../util/browserStorage';
+import useSignOut from 'react-auth-kit/hooks/useSignOut';
 
 const Pocetna = () => {
-  // const isLoggedIn = true;
-  // const ctx = useContext(GlobalContext);
-
   const signIn = useSignIn();
-  // const isAuthenticated = useIsAuthenticated();
+  const signOut = useSignOut();
   const auth = useAuthUser();
-  const authHeader = useAuthHeader();
   const usernameRef = useRef();
+  const globalCtx = useContext(GlobalContext);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState(null);
-  const globalCtx = useContext(GlobalContext);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setErrorMsg('');
-  }, [username, password]);
-
-  useEffect(() => {
-    // console.log('Logged in user:', auth?.name);
-    // console.log('globalCtx.isLoggedInValue: ', globalCtx.isLoggedInValue);
-  }, [auth, globalCtx.isLoggedInValue]);
+    const validateExistingToken = async () => {
+      if (globalCtx.isLoggedInValue) {
+        try {
+          await getRukovanje('Bearer ' + getToken());
+          setIsLoading(false);
+        } catch (err) {
+          setIsLoading(false);
+          console.log('Sesija istekla - izloguj korisnika samo na frontu', err);
+          signOut();
+          globalCtx.setIsLoggedInFn(false);
+        }
+      } else {
+        setIsLoading(false);
+      }
+    };
+    validateExistingToken();
+  }, []);
 
   const handlePrijava = async (e) => {
     e.preventDefault();
 
-    // console.log(username, password);
-
     try {
       const response = await postPrijava(username, password);
-
-      // console.log(response.user, response.token);
 
       const { user, token, rola } = response.data;
 
@@ -51,21 +52,19 @@ const Pocetna = () => {
           token: token,
           type: 'Bearer',
         },
-        // refresh: token
         userState: {
           name: user,
           uid: password,
+          role: rola,
         },
       });
 
       globalCtx.setIsLoggedInFn(true);
-      globalCtx.setRolaKorisnikaFn(rola);
 
       setUsername('');
       setPassword('');
     } catch (err) {
       console.log('ERROR', err?.response?.status);
-      // setError(err);
       if (!err?.response) {
         setErrorMsg('Server nedostupan');
       } else if (err?.response.status === 401) {
@@ -100,15 +99,25 @@ const Pocetna = () => {
     );
   }
 
+  if (isLoading) {
+    return (
+      <div className='whole-page-flex-container'>
+        <Box sx={{ display: 'flex' }}>
+          <CircularProgress />
+        </Box>
+      </div>
+    );
+  }
+
   return (
     <section>
       {!globalCtx.isLoggedInValue && <p>Pocetna - korisnik NIJE prijavljen.</p>}
       {globalCtx.isLoggedInValue && <p>Dobrodošli, {auth?.name} !</p>}
       {globalCtx.isLoggedInValue && (
-        <p>Vaša rola: {globalCtx.rolaKorisnikaValue}</p>
+        <>
+          <p>Vaša rola: {auth?.role}</p>
+        </>
       )}
-
-      {/* <p>{authHeader}</p> */}
 
       <br />
 

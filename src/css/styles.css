@@ -82,6 +82,15 @@ nav li {
   /* border: 1px solid white; */
 }
 
+.whole-page-flex-container {
+  min-height: 50vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border: 1px solid white; */
+}
+
 .active {
   color: #42c16f;
 }

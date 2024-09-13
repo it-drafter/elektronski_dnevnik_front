@@ -1,4 +1,3 @@
-// import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { Box, Button } from '@mui/material';
 import useSignOut from 'react-auth-kit/hooks/useSignOut';
@@ -13,32 +12,17 @@ import { deepPurple } from '@mui/material/colors';
 
 const Header = () => {
   const globalCtx = useContext(GlobalContext);
-  // const isAuthenticated = useIsAuthenticated();
   const signOut = useSignOut();
   const authHeader = useAuthHeader();
   const nav = useNavigate();
 
-  // useEffect(() => {
-  //   console.log('isauthenticated: ', isAuthenticated);
-  // }, [isAuthenticated]);
-
   const handleOdjava = async () => {
-    // try {
-    // console.log('authHeader', authHeader);
-    // const response =
     await postOdjava(authHeader);
-    // console.log('response', response);
 
-    //   if (response.status !== 200) {
-    //     throw new Error('Došlo je do greške.');
-    //   }
-    // } catch (err) {
-    //   throw new Error('Greška: ' + err);
-    // }
-
-    // console.log('globalCtx.isLoggedInValue: ', globalCtx.isLoggedInValue);
     signOut();
+
     globalCtx.setIsLoggedInFn(false);
+
     nav('/');
   };
 

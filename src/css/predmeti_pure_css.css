@@ -1,11 +1,5 @@
 .section-pure-css {
-  /* background-color: #ffffff; */
-  /* color: #000000; */
   padding: 20px;
-  /* display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column; */
 }
 
 div.search-container {
@@ -16,7 +10,6 @@ div.search-container {
   width: 75%;
   height: 2rem;
   padding-left: 10px;
-  /* background-color: #eeeeee; */
   background-color: #4527a0;
   border-radius: 7px;
   border: 1px solid #d6d6d6;

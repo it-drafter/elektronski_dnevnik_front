@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import createStore from 'react-auth-kit/createStore';
 import AuthProvider from 'react-auth-kit';
@@ -11,10 +11,8 @@ import Pocetna from './pages/Pocetna';
 import Predmeti from './pages/Predmeti';
 import PredmetiPureCss from './pages/PredmetiPureCss';
 import Ucenici from './pages/Ucenici';
-// import Odjava from './pages/Odjava';
 import InfoPrijava from './pages/InfoPrijava';
-import { getPredmeti, getRukovanje } from './util/http';
-// import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
+import { getPredmeti } from './util/http';
 import { getToken } from './util/browserStorage';
 
 const authStore = createStore({
@@ -58,7 +56,6 @@ const router = createBrowserRouter([
           </RequireAuth>
         ),
         loader: async ({ request }) => {
-          // console.log('token', getToken());
           let url = new URL(request.url);
           let q = url.searchParams.get('q');
 
@@ -95,35 +92,12 @@ const router = createBrowserRouter([
           </RequireAuth>
         ),
       },
-      // {
-      //   path: 'odjava',
-      //   element: (
-      //     <RequireAuth fallbackPath={'/infoprijava'}>
-      //       <Odjava />
-      //     </RequireAuth>
-      //   ),
-      // },
     ],
   },
 ]);
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(getToken() !== null);
-  const [rolaKorisnika, setRolaKorisnika] = useState('');
-
-  useEffect(() => {
-    const doTheHandshake = async () => {
-      if (getToken()) {
-        const response = await getRukovanje('Bearer ' + getToken());
-
-        if (response.status === 200) {
-          setIsLoggedIn(true);
-        }
-      }
-    };
-
-    doTheHandshake();
-  }, []);
 
   return (
     <AuthProvider store={authStore}>
@@ -131,8 +105,6 @@ const App = () => {
         value={{
           isLoggedInValue: isLoggedIn,
           setIsLoggedInFn: setIsLoggedIn,
-          rolaKorisnikaValue: rolaKorisnika,
-          setRolaKorisnikaFn: setRolaKorisnika,
         }}
       >
         <RouterProvider router={router} />

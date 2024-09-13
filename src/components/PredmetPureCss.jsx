@@ -1,10 +1,4 @@
 const PredmetPureCss = ({ predmet }) => {
-  if (!predmet) {
-    return <p>Loading...</p>;
-  }
-
-  // console.log('PURE CSS PREDMET', predmet);
-
   return (
     <div className='predmet-purecss-container'>
       <div className='predmet-purecss-naziv-sifra'>
