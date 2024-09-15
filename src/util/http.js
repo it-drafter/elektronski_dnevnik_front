@@ -60,6 +60,30 @@ export const postPredmeti = async (token, payload) => {
   return response;
 };
 
+export const putPredmeti = async (token, payload, idPredmeta) => {
+  console.log('payload', payload);
+  const response = await axios.put(
+    `http://localhost:8080/dnevnik/predmeti/${idPredmeta}`,
+    payload,
+    {
+      headers: { Authorization: token },
+    }
+  );
+
+  return response;
+};
+
+export const deletePredmeti = async (token, idPredmeta) => {
+  const response = await axios.delete(
+    `http://localhost:8080/dnevnik/predmeti/${idPredmeta}`,
+    {
+      headers: { Authorization: token },
+    }
+  );
+
+  return response;
+};
+
 export const getUcenici = async (token) => {
   const response = await axios.get('http://localhost:8080/dnevnik/ucenici', {
     headers: { Authorization: token },

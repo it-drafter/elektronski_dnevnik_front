@@ -1,19 +1,20 @@
-import { Button, MenuItem, Stack, TextField, Typography } from '@mui/material';
+import { Button, Stack, TextField, Typography } from '@mui/material';
 import { useContext, useEffect, useRef, useState } from 'react';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import GlobalContext from '../context/global-context';
 import { deepPurple, grey } from '@mui/material/colors';
 import CancelIcon from '@mui/icons-material/Cancel';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { getToken } from '../util/browserStorage';
-import { postPredmeti } from '../util/http';
+import { postPredmeti, putPredmeti } from '../util/http';
 import { useImmer } from 'use-immer';
 
-const DodavanjePredmeta = () => {
+const PredmetForma = () => {
   const auth = useAuthUser();
   const globalCtx = useContext(GlobalContext);
   const nav = useNavigate();
+  const location = useLocation();
 
   const nazivPredmetaInputRef = useRef();
   const sifraPredmetaInputRef = useRef();
@@ -21,6 +22,8 @@ const DodavanjePredmeta = () => {
   const nedeljniFondCasovaInputRef = useRef();
 
   const [hasPermission, setHasPermission] = useState(false);
+  const [isSuccessfullyAdded, setIsSuccessfullyAdded] = useState(false);
+  const [isSuccessfullyModified, setIsSuccessfullyModified] = useState(false);
 
   const [invalidNazivPredmeta, updateInvalidNazivPredmeta] = useImmer([
     false,
@@ -39,14 +42,53 @@ const DodavanjePredmeta = () => {
   );
 
   useEffect(() => {
+    console.log('location', location.state.predmet);
     if (auth?.role === 'ROLA_ADMINISTRATOR') {
       setHasPermission(true);
     }
   }, []);
 
-  if (!hasPermission) {
-    return <section>Nemate ovlašćenje da pristupite ovoj stranici.</section>;
-  }
+  useEffect(() => {
+    let timeout1;
+
+    if (isSuccessfullyAdded) {
+      timeout1 = setTimeout(() => {
+        setIsSuccessfullyAdded(false);
+      }, 1500);
+    }
+
+    return () => {
+      clearTimeout(timeout1);
+    };
+  }, [isSuccessfullyAdded]);
+
+  useEffect(() => {
+    let timeout2;
+
+    if (isSuccessfullyModified) {
+      timeout2 = setTimeout(() => {
+        setIsSuccessfullyModified(false);
+      }, 1500);
+    }
+
+    return () => {
+      clearTimeout(timeout2);
+    };
+  }, [isSuccessfullyModified]);
+
+  useEffect(() => {
+    let timeout3;
+
+    timeout3 = setTimeout(() => {
+      if (nazivPredmetaInputRef.current) {
+        nazivPredmetaInputRef.current.focus();
+      }
+    }, 300);
+
+    return () => {
+      clearTimeout(timeout3);
+    };
+  }, []);
 
   const validateInput = () => {
     let isValid = true;
@@ -136,7 +178,20 @@ const DodavanjePredmeta = () => {
       };
 
       if (getToken()) {
-        const response = await postPredmeti('Bearer ' + getToken(), payload);
+        let response;
+
+        if (!location.state.isEditMode) {
+          response = await postPredmeti('Bearer ' + getToken(), payload);
+        }
+
+        if (location.state.isEditMode) {
+          response = await putPredmeti(
+            'Bearer ' + getToken(),
+            payload,
+            location.state.predmet.id
+          );
+        }
+
         console.log('RESPONSE od servera', response);
       }
 
@@ -144,8 +199,16 @@ const DodavanjePredmeta = () => {
       sifraPredmetaInputRef.current.value = '';
       opisPredmetaInputRef.current.value = '';
       nedeljniFondCasovaInputRef.current.value = '';
+
+      location.state.isEditMode
+        ? setIsSuccessfullyModified(true)
+        : setIsSuccessfullyAdded(true);
     }
   };
+
+  if (!hasPermission) {
+    return <section>Nemate ovlašćenje da pristupite ovoj stranici.</section>;
+  }
 
   return (
     <section>
@@ -154,7 +217,9 @@ const DodavanjePredmeta = () => {
         align='center'
         sx={{ fontFamily: globalCtx.fontFamilyValue, mb: 4 }}
       >
-        Dodavanje novog predmeta
+        {location.state.isEditMode
+          ? 'Izmena predmeta'
+          : 'Dodavanje novog predmeta'}
       </Typography>
 
       <Stack direction='column' gap='20px' alignItems='center'>
@@ -183,6 +248,11 @@ const DodavanjePredmeta = () => {
               border: '1px solid #9575cd',
             },
           }}
+          defaultValue={
+            location.state.isEditMode
+              ? location.state.predmet.nazivPredmeta
+              : null
+          }
         />
         <TextField
           label='Šifra predmeta'
@@ -209,6 +279,11 @@ const DodavanjePredmeta = () => {
               border: '1px solid #9575cd',
             },
           }}
+          defaultValue={
+            location.state.isEditMode
+              ? location.state.predmet.sifraPredmeta
+              : null
+          }
         />
         <TextField
           label='Opis predmeta'
@@ -235,6 +310,11 @@ const DodavanjePredmeta = () => {
               border: '1px solid #9575cd',
             },
           }}
+          defaultValue={
+            location.state.isEditMode
+              ? location.state.predmet.opisPredmeta
+              : null
+          }
         />
 
         <TextField
@@ -270,6 +350,11 @@ const DodavanjePredmeta = () => {
           InputProps={{
             inputProps: { min: 1, max: 10, step: 1 },
           }}
+          defaultValue={
+            location.state.isEditMode
+              ? location.state.predmet.nedeljniFondCasova
+              : null
+          }
         />
 
         <Stack
@@ -294,6 +379,11 @@ const DodavanjePredmeta = () => {
             Odustani
           </Button>
 
+          <Typography sx={{ fontFamily: globalCtx.fontFamilyValue }}>
+            {`${isSuccessfullyAdded ? 'Predmet dodat!' : ''}`}
+            {`${isSuccessfullyModified ? 'Predmet izmenjen!' : ''}`}
+          </Typography>
+
           <Button
             variant='outlined'
             startIcon={<AddCircleIcon />}
@@ -305,7 +395,7 @@ const DodavanjePredmeta = () => {
             }}
             disabled={globalCtx.isLoggedInValue ? false : true}
           >
-            Dodaj
+            {location.state.isEditMode ? 'Izmeni' : 'Dodaj'}
           </Button>
         </Stack>
       </Stack>
@@ -313,4 +403,4 @@ const DodavanjePredmeta = () => {
   );
 };
 
-export default DodavanjePredmeta;
+export default PredmetForma;

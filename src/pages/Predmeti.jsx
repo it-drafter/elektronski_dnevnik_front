@@ -7,12 +7,12 @@ import { useFetcher, useLoaderData, useNavigate } from 'react-router-dom';
 import Predmet from '../components/Predmet';
 import { Button, Stack, TextField, Typography } from '@mui/material';
 import GlobalContext from '../context/global-context';
-import { deepPurple, orange, grey } from '@mui/material/colors';
+import { deepPurple, grey } from '@mui/material/colors';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 
 const Predmeti = () => {
   const fetcher = useFetcher();
-  const searchInputRef = useRef(null);
+  const searchInputRef = useRef();
   const globalCtx = useContext(GlobalContext);
   const auth = useAuthUser();
   const nav = useNavigate();
@@ -22,11 +22,11 @@ const Predmeti = () => {
 
   useEffect(() => {
     if (fetcher.data) {
+      console.log('fetcher.data', fetcher.data);
       setPredmeti(fetcher.data);
     }
   }, [fetcher.data]);
 
-  // proveriti ovo zasto ne radi
   useEffect(() => {
     if (searchInputRef.current) {
       searchInputRef.current.focus();
@@ -106,7 +106,9 @@ const Predmeti = () => {
               height: '58px',
               borderRadius: '15px',
             }}
-            onClick={(e) => nav('/dodavanje-predmeta')}
+            onClick={(e) =>
+              nav('/predmet-forma', { state: { isEditMode: false } })
+            }
           >
             <AddCircleOutlineIcon sx={{ mr: 1 }} /> Dodaj predmet
           </Button>
@@ -115,7 +117,7 @@ const Predmeti = () => {
 
       <div className='predmeti-purecss-container'>
         {predmeti.map((el) => (
-          <Predmet key={el.id} predmet={el} />
+          <Predmet key={el.id} predmet={el} fetcherFun={fetcher} />
         ))}
       </div>
     </section>

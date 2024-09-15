@@ -14,7 +14,7 @@ import Ucenici from './pages/Ucenici';
 import InfoPrijava from './pages/InfoPrijava';
 import { getPredmeti } from './util/http';
 import { getToken } from './util/browserStorage';
-import DodavanjePredmeta from './pages/DodavanjePredmeta';
+import PredmetForma from './pages/PredmetForma';
 
 const authStore = createStore({
   authName: '_auth',
@@ -80,6 +80,7 @@ const router = createBrowserRouter([
           </RequireAuth>
         ),
         loader: ({ request }) => {
+          console.log(request);
           return loadPredmeti(request);
         },
       },
@@ -103,10 +104,10 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: 'dodavanje-predmeta',
+        path: 'predmet-forma',
         element: (
           <RequireAuth fallbackPath={'/infoprijava'}>
-            <DodavanjePredmeta />
+            <PredmetForma />
           </RequireAuth>
         ),
       },

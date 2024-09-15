@@ -10,10 +10,14 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import GlobalContext from '../context/global-context';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
+import { useNavigate } from 'react-router-dom';
+import { getToken } from '../util/browserStorage';
+import { deletePredmeti } from '../util/http';
 
-const Predmet = ({ predmet }) => {
+const Predmet = ({ predmet, fetcherFun }) => {
   const globalCtx = useContext(GlobalContext);
   const auth = useAuthUser();
+  const nav = useNavigate();
 
   return (
     <Card
@@ -27,6 +31,7 @@ const Predmet = ({ predmet }) => {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
+        borderRadius: '15px',
       }}
     >
       <CardContent
@@ -54,7 +59,7 @@ const Predmet = ({ predmet }) => {
           {predmet.sifraPredmeta}
         </Typography>
         <Typography
-          variant='caption'
+          variant='body2'
           sx={{
             color: '#ad99ce',
             mb: 1.5,
@@ -63,7 +68,10 @@ const Predmet = ({ predmet }) => {
         >
           Nedeljno časova: {predmet.nedeljniFondCasova}
         </Typography>
-        <Typography sx={{ fontFamily: globalCtx.fontFamilyValue }}>
+        <Typography
+          sx={{ fontFamily: globalCtx.fontFamilyValue }}
+          variant='caption'
+        >
           {predmet.opisPredmeta}
         </Typography>
       </CardContent>
@@ -76,11 +84,24 @@ const Predmet = ({ predmet }) => {
           }}
         >
           <Button variant='text' sx={{ borderRadius: '15px' }}>
-            <EditIcon sx={{ color: '#9575cd' }} />
+            <EditIcon
+              sx={{ color: '#9575cd' }}
+              onClick={(e) =>
+                nav('/predmet-forma', {
+                  state: { isEditMode: true, predmet: predmet },
+                })
+              }
+            />
           </Button>
 
           <Button variant='text' sx={{ borderRadius: '15px' }}>
-            <DeleteIcon sx={{ color: '#9575cd' }} />
+            <DeleteIcon
+              sx={{ color: '#9575cd' }}
+              onClick={async (e) => {
+                await deletePredmeti('Bearer ' + getToken(), predmet.id);
+                fetcherFun.load();
+              }}
+            />
           </Button>
         </CardActions>
       )}
