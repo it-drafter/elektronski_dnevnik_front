@@ -8,7 +8,7 @@ const PredmetPureCss = ({ predmet }) => {
 
       <p>{predmet.opisPredmeta}</p>
 
-      <p>Prikaži</p>
+      <p>Nedeljno časova: {predmet.nedeljniFondCasova}</p>
     </div>
   );
 };

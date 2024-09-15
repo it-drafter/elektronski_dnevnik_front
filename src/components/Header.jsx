@@ -7,8 +7,8 @@ import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
 import { useContext } from 'react';
 import GlobalContext from '../context/global-context';
 import { useNavigate } from 'react-router-dom';
-import schoolImg from '../assets/school.png';
 import { deepPurple } from '@mui/material/colors';
+import SchoolIcon from '@mui/icons-material/School';
 
 const Header = () => {
   const globalCtx = useContext(GlobalContext);
@@ -28,16 +28,14 @@ const Header = () => {
 
   return (
     <header>
-      <Box
-        component='img'
-        src={schoolImg}
-        alt='School'
-        sx={{
-          width: '120px',
-          '&:hover': { cursor: 'pointer' },
-        }}
+      <Button
+        variant='text'
         onClick={() => nav('/')}
-      />
+        sx={{ width: '100px', borderRadius: '15px' }}
+      >
+        <SchoolIcon sx={{ color: '#9575cd', fontSize: '75px' }} />
+      </Button>
+
       <h1>ELEKTRONSKI DNEVNIK</h1>
 
       <Button
@@ -46,7 +44,8 @@ const Header = () => {
         onClick={handleOdjava}
         sx={{
           color: deepPurple[300],
-          fontFamily: 'cursive',
+          fontFamily: globalCtx.fontFamilyValue,
+          borderRadius: '15px',
         }}
         disabled={globalCtx.isLoggedInValue ? false : true}
       >

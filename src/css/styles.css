@@ -9,7 +9,7 @@ html {
 }
 
 body {
-  font-family: cursive, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   background-color: #0f1214;
   color: #9575cd;
 }
@@ -26,8 +26,10 @@ header {
 footer {
   height: 10%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 15px;
   margin-bottom: 40px;
   margin-top: 30px;
   /* border: 1px solid white; */
@@ -54,7 +56,7 @@ section {
   padding: 20px;
   margin: 0 20px 10px;
   border: 1px solid #9575cd;
-  border-radius: 20px;
+  border-radius: 15px;
 }
 
 h1 {

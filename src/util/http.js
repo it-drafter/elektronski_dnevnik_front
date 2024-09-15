@@ -1,9 +1,20 @@
 import axios from 'axios';
 
-export const getRukovanje = async (token) => {
-  const response = await axios.get('http://localhost:8080/dnevnik/handshake', {
-    headers: { Authorization: token },
-  });
+export const getRukovanjeOpen = async () => {
+  const response = await axios.get(
+    'http://localhost:8080/dnevnik/handshake/open'
+  );
+
+  return response;
+};
+
+export const getRukovanjeSecured = async (token) => {
+  const response = await axios.get(
+    'http://localhost:8080/dnevnik/handshake/secured',
+    {
+      headers: { Authorization: token },
+    }
+  );
 
   return response;
 };
@@ -30,6 +41,27 @@ export const postOdjava = async (token) => {
 
 export const getPredmeti = async (token) => {
   const response = await axios.get('http://localhost:8080/dnevnik/predmeti', {
+    headers: { Authorization: token },
+  });
+
+  return response;
+};
+
+export const postPredmeti = async (token, payload) => {
+  console.log('payload', payload);
+  const response = await axios.post(
+    'http://localhost:8080/dnevnik/predmeti',
+    payload,
+    {
+      headers: { Authorization: token },
+    }
+  );
+
+  return response;
+};
+
+export const getUcenici = async (token) => {
+  const response = await axios.get('http://localhost:8080/dnevnik/ucenici', {
     headers: { Authorization: token },
   });
 

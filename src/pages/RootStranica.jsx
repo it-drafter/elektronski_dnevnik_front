@@ -17,23 +17,22 @@ import {
   Typography,
 } from '@mui/material';
 import { deepPurple, orange, grey } from '@mui/material/colors';
-import { postPrijava } from '../util/http';
+import { getRukovanjeOpen } from '../util/http';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 
 const navStyle = {
-  borderRadius: '50%',
-  backgroundColor: deepPurple[500],
-  color: grey['A100'],
+  width: '100px',
+  borderRadius: '15px',
+  // backgroundColor: deepPurple[500],
+  border: `1px solid ${deepPurple[300]}`,
+  color: deepPurple[100],
   '&.active': {
-    backgroundColor: orange[900],
+    backgroundColor: deepPurple[600],
+    // border: `1px solid ${orange[900]}`,
   },
   '&:hover': {
     backgroundColor: grey[800],
   },
-};
-
-const fontFamily = {
-  fontFamily: 'cursive',
 };
 
 const RootStranica = ({ children }) => {
@@ -43,23 +42,17 @@ const RootStranica = ({ children }) => {
   const auth = useAuthUser();
 
   useEffect(() => {
-    if (globalCtx.isLoggedInValue) {
-      const doTheHandshake = async () => {
-        try {
-          await postPrijava('fakeuser', 'fakepassword');
-        } catch (err) {
-          if (err?.status === 401) {
-            setIsLoading(false);
-          } else {
-            setError(err);
-          }
-        }
-      };
+    const doTheHandshake = async () => {
+      try {
+        await getRukovanjeOpen();
+        setIsLoading(false);
+      } catch (err) {
+        setIsLoading(false);
+        setError(err);
+      }
+    };
 
-      doTheHandshake();
-    } else {
-      setIsLoading(false);
-    }
+    doTheHandshake();
   }, []);
 
   if (error) {
@@ -89,7 +82,11 @@ const RootStranica = ({ children }) => {
             <ListItem>
               <ListItemButton component={NavLink} to={'/'} sx={navStyle}>
                 <ListItemText
-                  primary={<Typography style={fontFamily}>Početna</Typography>}
+                  primary={
+                    <Typography sx={{ fontFamily: globalCtx.fontFamilyValue }}>
+                      Početna
+                    </Typography>
+                  }
                 />
               </ListItemButton>
             </ListItem>
@@ -103,11 +100,22 @@ const RootStranica = ({ children }) => {
                 >
                   <ListItemText
                     primary={
-                      <Typography style={fontFamily}>Predmeti</Typography>
+                      <Typography
+                        sx={{ fontFamily: globalCtx.fontFamilyValue }}
+                      >
+                        Predmeti
+                      </Typography>
                     }
                     secondary={
                       <Typography
-                        style={{ fontFamily: 'cursive', fontSize: '0.8rem' }}
+                        sx={{
+                          fontFamily: globalCtx.fontFamilyValue,
+                          fontSize: '0.8rem',
+                        }}
+                        // style={{
+                        //   fontFamily: globalCtx.fontFamilyValue,
+                        //   fontSize: '0.8rem',
+                        // }}
                       >
                         MUI
                       </Typography>
@@ -125,11 +133,18 @@ const RootStranica = ({ children }) => {
                 >
                   <ListItemText
                     primary={
-                      <Typography style={fontFamily}>Predmeti</Typography>
+                      <Typography
+                        sx={{ fontFamily: globalCtx.fontFamilyValue }}
+                      >
+                        Predmeti
+                      </Typography>
                     }
                     secondary={
                       <Typography
-                        style={{ fontFamily: 'cursive', fontSize: '0.8rem' }}
+                        sx={{
+                          fontFamily: globalCtx.fontFamilyValue,
+                          fontSize: '0.8rem',
+                        }}
                       >
                         Pure CSS
                       </Typography>
@@ -149,7 +164,11 @@ const RootStranica = ({ children }) => {
                   >
                     <ListItemText
                       primary={
-                        <Typography style={fontFamily}>Učenici</Typography>
+                        <Typography
+                          sx={{ fontFamily: globalCtx.fontFamilyValue }}
+                        >
+                          Učenici
+                        </Typography>
                       }
                     />
                   </ListItemButton>

@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect, useContext } from 'react';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import useSignIn from 'react-auth-kit/hooks/useSignIn';
-import { getRukovanje, postPrijava } from '../util/http';
+import { getRukovanjeSecured, postPrijava } from '../util/http';
 import GlobalContext from '../context/global-context';
 import { Box, Button, CircularProgress } from '@mui/material';
 import { deepPurple } from '@mui/material/colors';
@@ -24,7 +24,7 @@ const Pocetna = () => {
     const validateExistingToken = async () => {
       if (globalCtx.isLoggedInValue) {
         try {
-          await getRukovanje('Bearer ' + getToken());
+          await getRukovanjeSecured('Bearer ' + getToken());
           setIsLoading(false);
         } catch (err) {
           setIsLoading(false);
@@ -89,7 +89,7 @@ const Pocetna = () => {
           }}
           sx={{
             color: deepPurple[300],
-            fontFamily: 'cursive',
+            fontFamily: { fontFamily: globalCtx.fontFamilyValue },
             mt: '20px',
           }}
         >
@@ -115,6 +115,7 @@ const Pocetna = () => {
       {globalCtx.isLoggedInValue && <p>Dobrodošli, {auth?.name} !</p>}
       {globalCtx.isLoggedInValue && (
         <>
+          <br />
           <p>Vaša rola: {auth?.role}</p>
         </>
       )}
