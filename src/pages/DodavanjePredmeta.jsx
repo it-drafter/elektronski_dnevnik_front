@@ -1,4 +1,4 @@
-import { Button, Stack, TextField, Typography } from '@mui/material';
+import { Button, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import { useContext, useEffect, useRef, useState } from 'react';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import GlobalContext from '../context/global-context';
@@ -34,8 +34,9 @@ const DodavanjePredmeta = () => {
     false,
     null,
   ]);
-  const [invalidNedeljniFondCasova, setInvalidNedeljniFondCasova] =
-    useState(false);
+  const [invalidNedeljniFondCasova, updateInvalidNedeljniFondCasova] = useImmer(
+    [false, null]
+  );
 
   useEffect(() => {
     if (auth?.role === 'ROLA_ADMINISTRATOR') {
@@ -56,9 +57,7 @@ const DodavanjePredmeta = () => {
         'Naziv predmeta ne sme biti prazan!',
       ]);
       isValid = false;
-    }
-
-    if (nazivPredmetaInputRef.current.value.trim().length > 25) {
+    } else if (nazivPredmetaInputRef.current.value.trim().length > 25) {
       updateInvalidNazivPredmeta((draft) => [
         true,
         'Naziv predmeta može imati maksimalno 25 karaktera!',
@@ -72,9 +71,7 @@ const DodavanjePredmeta = () => {
         'Šifra predmeta ne sme biti prazna!',
       ]);
       isValid = false;
-    }
-
-    if (sifraPredmetaInputRef.current.value.trim().length > 10) {
+    } else if (sifraPredmetaInputRef.current.value.trim().length > 10) {
       updateInvalidSifraPredmeta((draft) => [
         true,
         'Šifra predmeta može imati maksimalno 10 karaktera!',
@@ -88,21 +85,29 @@ const DodavanjePredmeta = () => {
         'Opis predmeta ne sme biti prazan!',
       ]);
       isValid = false;
-    }
-
-    if (opisPredmetaInputRef.current.value.trim().length > 50) {
+    } else if (opisPredmetaInputRef.current.value.trim().length > 20) {
       updateInvalidOpisPredmeta((draft) => [
         true,
-        'Opis predmeta može imati maksimalno 10 karaktera!',
+        'Opis predmeta može imati maksimalno 20 karaktera!',
       ]);
       isValid = false;
     }
 
-    if (
-      nedeljniFondCasovaInputRef.current.value.trim().length === 0 ||
-      /^\d+$/.test(nedeljniFondCasovaInputRef.current.value.trim()) === false
+    if (nedeljniFondCasovaInputRef.current.value.trim().length === 0) {
+      updateInvalidNedeljniFondCasova((draft) => [
+        true,
+        'Nedeljni fond časova ne sme biti prazan!',
+      ]);
+      isValid = false;
+    } else if (
+      nedeljniFondCasovaInputRef.current.value.trim() < 1 ||
+      nedeljniFondCasovaInputRef.current.value.trim() > 20 ||
+      !Number.isInteger(Number(nedeljniFondCasovaInputRef.current.value.trim()))
     ) {
-      setInvalidNedeljniFondCasova(true);
+      updateInvalidNedeljniFondCasova((draft) => [
+        true,
+        'Nedeljni fond časova mora biti ceo broj od 1 do 20!',
+      ]);
       isValid = false;
     }
 
@@ -110,19 +115,28 @@ const DodavanjePredmeta = () => {
   };
 
   const submitHandler = async () => {
-    // console.log('SUBMIT CLICKED', nazivPredmetaInputRef.current.value);
+    // console.log(
+    //   'SUBMIT CLICKED',
+    //   opisPredmetaInputRef.current.value.trim().length
+    // );
+    // console.log(
+    //   'SUBMIT CLICKED1',
+    //   typeof nazivPredmetaInputRef.current.value.trim()
+    // );
     if (validateInput()) {
-      console.log('Pozovi HTTP post metodu da sacuvas novi predmet!');
+      // console.log('Pozovi HTTP post metodu da sacuvas novi predmet!');
+
+      const payload = {
+        nazivPredmeta: nazivPredmetaInputRef.current.value.trim(),
+        sifraPredmeta: sifraPredmetaInputRef.current.value.trim(),
+        opisPredmeta: opisPredmetaInputRef.current.value.trim(),
+        nedeljniFondCasova: Number(
+          nedeljniFondCasovaInputRef.current.value.trim()
+        ),
+      };
 
       if (getToken()) {
-        const response = await postPredmeti('Bearer ' + getToken(), {
-          nazivPredmeta: nazivPredmetaInputRef.current.value.trim(),
-          sifraPredmeta: sifraPredmetaInputRef.current.value.trim(),
-          opisPredmeta: opisPredmetaInputRef.current.value.trim(),
-          nedeljniFondCasova: Number(
-            nedeljniFondCasovaInputRef.current.value.trim()
-          ),
-        });
+        const response = await postPredmeti('Bearer ' + getToken(), payload);
         console.log('RESPONSE od servera', response);
       }
 
@@ -222,17 +236,25 @@ const DodavanjePredmeta = () => {
             },
           }}
         />
+
         <TextField
           label='Nedeljni fond časova'
           variant='outlined'
           color='secondary'
+          type='number'
           inputRef={nedeljniFondCasovaInputRef}
-          onFocus={() => setInvalidNedeljniFondCasova(false)}
+          onFocus={() =>
+            updateInvalidNedeljniFondCasova((draft) => [false, null])
+          }
+          error={invalidNedeljniFondCasova[0]}
+          helperText={
+            invalidNedeljniFondCasova[0] ? invalidNedeljniFondCasova[1] : null
+          }
           sx={{
             width: '100%',
             '& fieldset': { border: 'none' },
             '& .MuiFormLabel-root': {
-              color: invalidNedeljniFondCasova
+              color: invalidNedeljniFondCasova[0]
                 ? 'red!important'
                 : deepPurple[200] + '!important',
               fontFamily: globalCtx.fontFamilyValue + '!important',
@@ -244,6 +266,9 @@ const DodavanjePredmeta = () => {
               marginTop: '10px',
               border: '1px solid #9575cd',
             },
+          }}
+          InputProps={{
+            inputProps: { min: 1, max: 10, step: 1 },
           }}
         />
 
