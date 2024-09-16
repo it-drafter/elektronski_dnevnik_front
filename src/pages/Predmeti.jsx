@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
-import '../css/predmeti_pure_css.css';
+// import '../css/predmeti_pure_css.css';
 
 import { useFetcher, useLoaderData, useNavigate } from 'react-router-dom';
 import Predmet from '../components/Predmet';

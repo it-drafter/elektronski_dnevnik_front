@@ -370,6 +370,7 @@ const PredmetForma = () => {
           direction='row'
           sx={{
             justifyContent: 'space-between',
+            alignItems: 'center',
             width: '100%',
             marginTop: '10px',
           }}
@@ -388,7 +389,9 @@ const PredmetForma = () => {
             Odustani
           </Button>
 
-          <Typography sx={{ fontFamily: globalCtx.fontFamilyValue }}>
+          <Typography
+            sx={{ fontFamily: globalCtx.fontFamilyValue, color: 'green' }}
+          >
             {`${isSuccessfullyAdded ? 'Predmet dodat!' : ''}`}
             {`${isSuccessfullyModified ? 'Predmet izmenjen!' : ''}`}
           </Typography>

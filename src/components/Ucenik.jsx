@@ -1,4 +1,7 @@
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Button,
   Card,
   CardActions,
@@ -13,6 +16,7 @@ import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { useNavigate } from 'react-router-dom';
 import { getToken } from '../util/browserStorage';
 import { deleteUcenici } from '../util/http';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const Ucenik = ({ ucenik, fetcherFun }) => {
   const globalCtx = useContext(GlobalContext);
@@ -24,7 +28,7 @@ const Ucenik = ({ ucenik, fetcherFun }) => {
       variant='outlined'
       sx={{
         width: '300px',
-        height: '400px',
+        height: '500px',
         backgroundColor: '#0f1214',
         color: '#9575cd',
         border: '1px solid #9575cd',
@@ -72,28 +76,78 @@ const Ucenik = ({ ucenik, fetcherFun }) => {
             : 'Nema podatka'}
         </Typography>
         <Typography
-          sx={{ fontFamily: globalCtx.fontFamilyValue }}
-          variant='caption'
+          sx={{ fontFamily: globalCtx.fontFamilyValue, textAlign: 'center' }}
+          variant='body2'
+          mb={2}
         >
           Adresa: {ucenik.korisnik.adresaStanovanja} <br />
           Telefon: {ucenik.korisnik.brojTelefona} <br />
           Korisničko ime: {ucenik.korisnik.korisnickoIme} <br />
-          <br />
-          Roditelj:{' '}
-          {ucenik?.roditelj?.korisnik?.prezime
-            ? `${ucenik?.roditelj?.korisnik?.ime} ${ucenik?.roditelj?.korisnik?.prezime}`
-            : 'Nema podatka'}{' '}
-          <br />
-          Email roditelja:{' '}
-          {ucenik?.roditelj?.emailAdresa
-            ? ucenik?.roditelj?.emailAdresa
-            : 'Nema podatka'}{' '}
-          <br />
-          Telefon roditelja:{' '}
-          {ucenik?.roditelj?.korisnik?.brojTelefona
-            ? ucenik?.roditelj?.korisnik?.brojTelefona
-            : 'Nema podatka'}
         </Typography>
+        <Accordion
+          sx={{
+            backgroundColor: '#0f1214',
+            border: '1px solid #9575cd',
+            borderRadius: '15px!important',
+          }}
+        >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon sx={{ color: '#ad99ce' }} />}
+            aria-controls='panel1-content'
+            id='panel1-header'
+            sx={{
+              color: '#ad99ce',
+              marginTop: '0!important',
+              fontFamily: globalCtx.fontFamilyValue,
+            }}
+          >
+            Roditelj
+          </AccordionSummary>
+          <AccordionDetails
+            sx={{
+              color: '#ad99ce',
+              fontFamily: globalCtx.fontFamilyValue,
+            }}
+          >
+            <Typography
+              sx={{
+                fontFamily: globalCtx.fontFamilyValue,
+                textAlign: 'center',
+              }}
+              variant='body2'
+            >
+              {ucenik?.roditelj?.korisnik?.prezime
+                ? `${ucenik?.roditelj?.korisnik?.ime} ${ucenik?.roditelj?.korisnik?.prezime}`
+                : 'Nema podatka'}{' '}
+            </Typography>
+
+            <Typography
+              sx={{
+                fontFamily: globalCtx.fontFamilyValue,
+                textAlign: 'center',
+              }}
+              variant='body2'
+            >
+              Email:{' '}
+              {ucenik?.roditelj?.emailAdresa
+                ? ucenik?.roditelj?.emailAdresa
+                : 'Nema podatka'}{' '}
+            </Typography>
+
+            <Typography
+              sx={{
+                fontFamily: globalCtx.fontFamilyValue,
+                textAlign: 'center',
+              }}
+              variant='body2'
+            >
+              Telefon:{' '}
+              {ucenik?.roditelj?.korisnik?.brojTelefona
+                ? ucenik?.roditelj?.korisnik?.brojTelefona
+                : 'Nema podatka'}
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
       </CardContent>
       {auth?.role === 'ROLA_ADMINISTRATOR' && (
         <CardActions

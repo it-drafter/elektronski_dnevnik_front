@@ -35,9 +35,17 @@ const Ucenici = () => {
   }, [fetcher.data]);
 
   useEffect(() => {
-    if (searchInputRef.current) {
-      searchInputRef.current.focus();
-    }
+    let timeout1;
+
+    timeout1 = setTimeout(() => {
+      if (searchInputRef.current) {
+        searchInputRef.current.focus();
+      }
+    }, 300);
+
+    return () => {
+      clearTimeout(timeout1);
+    };
   }, []);
 
   if (!hasPermission) {

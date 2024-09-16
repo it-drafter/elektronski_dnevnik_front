@@ -109,3 +109,61 @@ nav li {
   margin-top: 20px;
   margin-bottom: 60px;
 }
+
+div.search-container {
+  text-align: center;
+}
+
+.search-box {
+  width: 75%;
+  height: 2rem;
+  padding-left: 10px;
+  background-color: #0f1214;
+  border-radius: 15px;
+  border: 1px solid #5e35b1;
+  color: white;
+}
+
+.search-box:focus {
+  outline-width: 0;
+}
+
+.section-pure-css > h2 {
+  text-align: center;
+  font-size: x-large;
+  margin-bottom: 20px;
+}
+
+.predmeti-purecss-container {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.predmet-purecss-container {
+  border: 1px solid #9575cd;
+  border-radius: 15px;
+  height: 200px;
+  width: 200px;
+  padding: 0 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.predmet-purecss-naziv-sifra {
+  width: 100%;
+}
+
+.predmet-purecss-naziv-sifra > h2 {
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.predmet-purecss-naziv-sifra > p {
+  text-align: center;
+}

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import '../css/predmeti_pure_css.css';
+// import '../css/predmeti_pure_css.css';
 
 import { useFetcher, useLoaderData } from 'react-router-dom';
 import PredmetPureCss from '../components/PredmetPureCss';

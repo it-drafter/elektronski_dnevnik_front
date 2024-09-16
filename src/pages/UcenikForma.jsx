@@ -867,6 +867,7 @@ const UcenikForma = () => {
           direction='row'
           sx={{
             justifyContent: 'space-between',
+            alignItems: 'center',
             width: '100%',
             marginTop: '10px',
           }}
@@ -885,7 +886,9 @@ const UcenikForma = () => {
             Odustani
           </Button>
 
-          <Typography sx={{ fontFamily: globalCtx.fontFamilyValue }}>
+          <Typography
+            sx={{ fontFamily: globalCtx.fontFamilyValue, color: 'green' }}
+          >
             {`${isSuccessfullyAdded ? 'Učenik dodat!' : ''}`}
             {`${isSuccessfullyModified ? 'Učenik izmenjen!' : ''}`}
           </Typography>
