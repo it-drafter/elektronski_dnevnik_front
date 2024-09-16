@@ -24,37 +24,6 @@ const authStore = createStore({
   // cookieSecure: window.location.protocol === 'http:',
 });
 
-// const loadPredmeti = async (request) => {
-//   {
-//     let url = new URL(request.url);
-//     let q = url.searchParams.get('q');
-
-//     if (getToken()) {
-//       const response = await getPredmeti('Bearer ' + getToken());
-
-//       if (!q || q === '') {
-//         return response.data;
-//       } else {
-//         // console.log('pretrazi predmete', q);
-
-//         return response.data.filter((v) => {
-//           let qq = q.toLowerCase();
-
-//           let r =
-//             v.nazivPredmeta.toLowerCase().includes(qq) ||
-//             v.opisPredmeta.toLowerCase().includes(qq);
-
-//           // console.log(r);
-
-//           return r;
-//         });
-//       }
-//     }
-
-//     return null;
-//   }
-// };
-
 const loadData = async (request, entity) => {
   {
     let url = new URL(request.url);
@@ -74,8 +43,6 @@ const loadData = async (request, entity) => {
       if (!q || q === '') {
         return response.data;
       } else {
-        // console.log('pretrazi predmete', q);
-
         return response.data.filter((v) => {
           let qq = q.toLowerCase();
           let r;
@@ -92,7 +59,6 @@ const loadData = async (request, entity) => {
               v.korisnik.ime.toLowerCase().includes(qq) ||
               v.korisnik.prezime.toLowerCase().includes(qq);
           }
-          // console.log(r);
 
           return r;
         });
@@ -129,7 +95,6 @@ const router = createBrowserRouter([
           </RequireAuth>
         ),
         loader: ({ request }) => {
-          console.log(request);
           return loadData(request, 'predmeti');
         },
       },
@@ -152,7 +117,6 @@ const router = createBrowserRouter([
           </RequireAuth>
         ),
         loader: ({ request }) => {
-          console.log(request);
           return loadData(request, 'ucenici');
         },
       },

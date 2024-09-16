@@ -47,7 +47,6 @@ const UcenikForma = () => {
   const brojTelefonaInputRef = useRef();
   const korisnickoImeInputRef = useRef();
   const lozinkaInputRef = useRef();
-  // const odeljenjeInputRef = useRef();
 
   const [invalidImeUcenika, updateInvalidImeUcenika] = useImmer([false, null]);
   const [invalidPrezimeUcenika, updateInvalidPrezimeUcenika] = useImmer([
@@ -71,9 +70,9 @@ const UcenikForma = () => {
     null,
   ]);
   const [invalidLozinka, updateInvalidLozinka] = useImmer([false, null]);
+
   const [invalidOdeljenje, setInvalidOdeljenje] = useState(false);
   const [invalidRoditelj, setInvalidRoditelj] = useState(false);
-
   const [hasPermission, setHasPermission] = useState(false);
   const [isSuccessfullyAdded, setIsSuccessfullyAdded] = useState(false);
   const [isSuccessfullyModified, setIsSuccessfullyModified] = useState(false);
@@ -90,7 +89,6 @@ const UcenikForma = () => {
   );
 
   useEffect(() => {
-    // console.log('location', location.state.ucenik);
     if (auth?.role === 'ROLA_ADMINISTRATOR') {
       setHasPermission(true);
     }
@@ -146,7 +144,6 @@ const UcenikForma = () => {
     const fetchOdeljenja = async () => {
       const response = await getOdeljenja('Bearer ' + getToken());
       setOdeljenjaList(response.data);
-      // console.log(response.data);
     };
 
     fetchOdeljenja();
@@ -156,7 +153,6 @@ const UcenikForma = () => {
     const fetchRoditelji = async () => {
       const response = await getRoditelji('Bearer ' + getToken());
       setRoditeljiList(response.data);
-      // console.log(response.data);
     };
 
     fetchRoditelji();
@@ -316,7 +312,6 @@ const UcenikForma = () => {
   };
 
   const handleCloseOdeljenje = (event, reason) => {
-    // console.log('close reason', reason);s
     if (reason !== 'backdropClick') {
       setOpenOdeljenje(false);
 
@@ -342,11 +337,6 @@ const UcenikForma = () => {
   // Select list end:
 
   const submitHandler = async () => {
-    // console.log('SUBMIT CLICKED', odeljenjeInputRef);
-    // console.log(
-    //   'SUBMIT CLICKED1',
-    //   typeof imeUcenikaInputRef.current.value.trim()
-    // );
     if (validateInput()) {
       let payload;
 
@@ -371,8 +361,6 @@ const UcenikForma = () => {
         },
       };
 
-      console.log('payload click', payload);
-
       if (getToken()) {
         let response;
 
@@ -387,8 +375,6 @@ const UcenikForma = () => {
             location.state.ucenik.id
           );
         }
-
-        console.log('RESPONSE od servera', response);
       }
 
       imeUcenikaInputRef.current.value = '';
@@ -410,8 +396,6 @@ const UcenikForma = () => {
   if (!hasPermission) {
     return <section>Nemate ovlašćenje da pristupite ovoj stranici.</section>;
   }
-
-  console.log(odeljenje);
 
   return (
     <section>
@@ -654,11 +638,6 @@ const UcenikForma = () => {
               border: '1px solid #9575cd',
             },
           }}
-          // defaultValue={
-          //   location.state.isEditMode
-          //     ? location.state.ucenik.korisnik.lozinka
-          //     : null
-          // }
           InputProps={{
             endAdornment: (
               <InputAdornment position='end'>
@@ -696,7 +675,6 @@ const UcenikForma = () => {
               height: '57px',
             }}
             onFocus={() => setInvalidOdeljenje(false)}
-            // disabled={globalCtx.isLoggedInValue ? false : true}
           >
             Odeljenje{''}
             {odeljenje
@@ -791,7 +769,6 @@ const UcenikForma = () => {
               height: '57px',
             }}
             onFocus={() => setInvalidRoditelj(false)}
-            // disabled={globalCtx.isLoggedInValue ? false : true}
           >
             Roditelj{''}
             {roditelj
@@ -881,7 +858,6 @@ const UcenikForma = () => {
               fontFamily: globalCtx.fontFamilyValue,
               borderRadius: '15px',
             }}
-            // disabled={globalCtx.isLoggedInValue ? false : true}
           >
             Odustani
           </Button>
@@ -902,7 +878,6 @@ const UcenikForma = () => {
               fontFamily: globalCtx.fontFamilyValue,
               borderRadius: '15px',
             }}
-            // disabled={globalCtx.isLoggedInValue ? false : true}
           >
             {location.state.isEditMode ? 'Izmeni' : 'Dodaj'}
           </Button>

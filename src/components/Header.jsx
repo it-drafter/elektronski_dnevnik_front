@@ -1,5 +1,5 @@
 import LogoutIcon from '@mui/icons-material/Logout';
-import { Box, Button } from '@mui/material';
+import { Button } from '@mui/material';
 import useSignOut from 'react-auth-kit/hooks/useSignOut';
 
 import { postOdjava } from '../util/http';

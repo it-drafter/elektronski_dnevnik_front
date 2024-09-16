@@ -48,7 +48,6 @@ export const getPredmeti = async (token) => {
 };
 
 export const postPredmeti = async (token, payload) => {
-  console.log('payload', payload);
   const response = await axios.post(
     'http://localhost:8080/dnevnik/predmeti',
     payload,
@@ -61,7 +60,6 @@ export const postPredmeti = async (token, payload) => {
 };
 
 export const putPredmeti = async (token, payload, idPredmeta) => {
-  console.log('payload', payload);
   const response = await axios.put(
     `http://localhost:8080/dnevnik/predmeti/${idPredmeta}`,
     payload,
@@ -93,7 +91,6 @@ export const getUcenici = async (token) => {
 };
 
 export const postUcenici = async (token, payload) => {
-  console.log('payload', payload);
   const response = await axios.post(
     'http://localhost:8080/dnevnik/ucenici',
     payload,
@@ -106,7 +103,6 @@ export const postUcenici = async (token, payload) => {
 };
 
 export const putUcenici = async (token, payload, idUcenika) => {
-  console.log('payload', payload);
   const response = await axios.put(
     `http://localhost:8080/dnevnik/ucenici/${idUcenika}`,
     payload,

@@ -1,5 +1,3 @@
-// Iskljucen ESLint jer ne zna sta je to props.children!
-
 import { Outlet, NavLink } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import GlobalContext from '../context/global-context';
@@ -23,12 +21,10 @@ import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 const navStyle = {
   width: '100px',
   borderRadius: '15px',
-  // backgroundColor: deepPurple[500],
   border: `1px solid ${deepPurple[300]}`,
   color: deepPurple[100],
   '&.active': {
     backgroundColor: deepPurple[600],
-    // border: `1px solid ${orange[900]}`,
   },
   '&:hover': {
     backgroundColor: grey[800],
@@ -112,10 +108,6 @@ const RootStranica = ({ children }) => {
                           fontFamily: globalCtx.fontFamilyValue,
                           fontSize: '0.8rem',
                         }}
-                        // style={{
-                        //   fontFamily: globalCtx.fontFamilyValue,
-                        //   fontSize: '0.8rem',
-                        // }}
                       >
                         MUI
                       </Typography>

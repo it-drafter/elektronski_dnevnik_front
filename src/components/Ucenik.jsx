@@ -160,12 +160,10 @@ const Ucenik = ({ ucenik, fetcherFun }) => {
           <Button variant='text' sx={{ borderRadius: '15px' }}>
             <EditIcon
               sx={{ color: '#9575cd' }}
-              onClick={
-                (e) =>
-                  nav('/ucenik-forma', {
-                    state: { isEditMode: true, ucenik: ucenik },
-                  })
-                // console.log('click edit ucenik')
+              onClick={(e) =>
+                nav('/ucenik-forma', {
+                  state: { isEditMode: true, ucenik: ucenik },
+                })
               }
             />
           </Button>
@@ -176,7 +174,6 @@ const Ucenik = ({ ucenik, fetcherFun }) => {
               onClick={async (e) => {
                 await deleteUcenici('Bearer ' + getToken(), ucenik.id);
                 fetcherFun.load();
-                // console.log('click delete ucenik');
               }}
             />
           </Button>

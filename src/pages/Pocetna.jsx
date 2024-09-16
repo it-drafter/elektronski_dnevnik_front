@@ -29,8 +29,6 @@ const Pocetna = () => {
   const korisnickoImeInputRef = useRef();
   const lozinkaInputRef = useRef();
 
-  // const [username, setUsername] = useState('');
-  // const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
@@ -91,9 +89,7 @@ const Pocetna = () => {
   };
   // Password field end:
 
-  const handlePrijava = async (e) => {
-    // e.preventDefault();
-
+  const handlePrijava = async () => {
     if (validateInput()) {
       try {
         const response = await postPrijava(
@@ -116,9 +112,6 @@ const Pocetna = () => {
         });
 
         globalCtx.setIsLoggedInFn(true);
-
-        // setUsername('');
-        // setPassword('');
       } catch (err) {
         console.log('ERROR', err?.response?.status);
         if (!err?.response) {
@@ -314,32 +307,6 @@ const Pocetna = () => {
           </Button>
         </Stack>
       )}
-
-      {/* {globalCtx.isLoggedInValue === false && (
-        <form onSubmit={handlePrijava}>
-          <label htmlFor='username'>Korisničko ime: </label>
-          <input
-            type='text'
-            id='username'
-            ref={usernameRef}
-            autoComplete='off'
-            onChange={(e) => setUsername(e.target.value)}
-            value={username}
-            required
-          />
-
-          <label htmlFor='password'>Lozinka: </label>
-          <input
-            type='password'
-            id='password'
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-            required
-          />
-
-          <button>Sign In</button>
-        </form>
-      )} */}
     </section>
   );
 };

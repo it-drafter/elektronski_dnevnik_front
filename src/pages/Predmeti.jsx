@@ -1,8 +1,5 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-
-// import '../css/predmeti_pure_css.css';
-
 import { useFetcher, useLoaderData, useNavigate } from 'react-router-dom';
 import Predmet from '../components/Predmet';
 import { Button, Stack, TextField, Typography } from '@mui/material';
@@ -22,7 +19,6 @@ const Predmeti = () => {
 
   useEffect(() => {
     if (fetcher.data) {
-      console.log('fetcher.data', fetcher.data);
       setPredmeti(fetcher.data);
     }
   }, [fetcher.data]);
@@ -72,7 +68,6 @@ const Predmeti = () => {
             },
             input: {
               color: grey['A100'],
-              // backgroundColor: deepPurple[500],
               borderRadius: '15px',
               height: '22px',
               marginTop: '10px',
@@ -84,10 +79,8 @@ const Predmeti = () => {
         {auth?.role === 'ROLA_ADMINISTRATOR' && (
           <Button
             variant='outlined'
-            // onClick={(e) => nav('/add_book')}
             sx={{
               fontFamily: globalCtx.fontFamilyValue,
-              // backgroundColor: deepPurple[500],
               color: deepPurple[300],
               height: '58px',
               borderRadius: '15px',

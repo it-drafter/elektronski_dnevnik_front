@@ -20,7 +20,6 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 30px 30px 20px;
-  /* border: 1px solid white; */
 }
 
 footer {
@@ -32,7 +31,6 @@ footer {
   gap: 15px;
   margin-bottom: 40px;
   margin-top: 30px;
-  /* border: 1px solid white; */
 }
 
 nav {
@@ -42,7 +40,6 @@ nav {
   align-items: flex-start;
   justify-content: flex-start;
   padding-left: 15px;
-  /* border: 1px solid white; */
 }
 
 main {
@@ -81,7 +78,6 @@ nav li {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  /* border: 1px solid white; */
 }
 
 .whole-page-flex-container {
@@ -90,7 +86,6 @@ nav li {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* border: 1px solid white; */
 }
 
 .active {
@@ -166,4 +161,20 @@ div.search-container {
 
 .predmet-purecss-naziv-sifra > p {
   text-align: center;
+}
+
+footer .back-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  font-size: 20px;
+  color: #257b56;
+  cursor: pointer;
+  border-radius: 400px;
+}
+
+.arrowup {
+  width: 50px;
+  height: 50px;
+  background-color: transparent;
 }

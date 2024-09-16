@@ -43,7 +43,6 @@ const PredmetForma = () => {
   const [isSuccessfullyModified, setIsSuccessfullyModified] = useState(false);
 
   useEffect(() => {
-    // console.log('location', location.state.predmet);
     if (auth?.role === 'ROLA_ADMINISTRATOR') {
       setHasPermission(true);
     }
@@ -162,17 +161,7 @@ const PredmetForma = () => {
   };
 
   const submitHandler = async () => {
-    // console.log(
-    //   'SUBMIT CLICKED',
-    //   opisPredmetaInputRef.current.value.trim().length
-    // );
-    // console.log(
-    //   'SUBMIT CLICKED1',
-    //   typeof nazivPredmetaInputRef.current.value.trim()
-    // );
     if (validateInput()) {
-      // console.log('Pozovi HTTP post metodu da sacuvas novi predmet!');
-
       const payload = {
         nazivPredmeta: nazivPredmetaInputRef.current.value.trim(),
         sifraPredmeta: sifraPredmetaInputRef.current.value.trim(),
@@ -196,8 +185,6 @@ const PredmetForma = () => {
             location.state.predmet.id
           );
         }
-
-        console.log('RESPONSE od servera', response);
       }
 
       nazivPredmetaInputRef.current.value = '';
@@ -384,7 +371,6 @@ const PredmetForma = () => {
               fontFamily: globalCtx.fontFamilyValue,
               borderRadius: '15px',
             }}
-            // disabled={globalCtx.isLoggedInValue ? false : true}
           >
             Odustani
           </Button>
@@ -405,7 +391,6 @@ const PredmetForma = () => {
               fontFamily: globalCtx.fontFamilyValue,
               borderRadius: '15px',
             }}
-            // disabled={globalCtx.isLoggedInValue ? false : true}
           >
             {location.state.isEditMode ? 'Izmeni' : 'Dodaj'}
           </Button>
