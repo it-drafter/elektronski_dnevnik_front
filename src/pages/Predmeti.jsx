@@ -81,20 +81,6 @@ const Predmeti = () => {
           }}
         />
 
-        {/* <div className='search-container'>
-          <input
-            type='search'
-            placeholder='Search...'
-            className='search-box'
-            value={q}
-            ref={searchInput}
-            onChange={(e) => {
-              setQ(e.target.value);
-              fetcher.load(`?q=${encodeURIComponent(e.target.value)}`);
-            }}
-          />
-        </div> */}
-
         {auth?.role === 'ROLA_ADMINISTRATOR' && (
           <Button
             variant='outlined'

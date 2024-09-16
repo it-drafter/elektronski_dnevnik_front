@@ -7,11 +7,12 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getToken } from '../util/browserStorage';
-import { postPredmeti, putPredmeti } from '../util/http';
 import { useImmer } from 'use-immer';
+import { postPredmeti, putPredmeti } from '../util/http';
 
 const PredmetForma = () => {
   const auth = useAuthUser();
+
   const globalCtx = useContext(GlobalContext);
   const nav = useNavigate();
   const location = useLocation();
@@ -20,10 +21,6 @@ const PredmetForma = () => {
   const sifraPredmetaInputRef = useRef();
   const opisPredmetaInputRef = useRef();
   const nedeljniFondCasovaInputRef = useRef();
-
-  const [hasPermission, setHasPermission] = useState(false);
-  const [isSuccessfullyAdded, setIsSuccessfullyAdded] = useState(false);
-  const [isSuccessfullyModified, setIsSuccessfullyModified] = useState(false);
 
   const [invalidNazivPredmeta, updateInvalidNazivPredmeta] = useImmer([
     false,
@@ -41,8 +38,12 @@ const PredmetForma = () => {
     [false, null]
   );
 
+  const [hasPermission, setHasPermission] = useState(false);
+  const [isSuccessfullyAdded, setIsSuccessfullyAdded] = useState(false);
+  const [isSuccessfullyModified, setIsSuccessfullyModified] = useState(false);
+
   useEffect(() => {
-    console.log('location', location.state.predmet);
+    // console.log('location', location.state.predmet);
     if (auth?.role === 'ROLA_ADMINISTRATOR') {
       setHasPermission(true);
     }
@@ -54,7 +55,9 @@ const PredmetForma = () => {
     if (isSuccessfullyAdded) {
       timeout1 = setTimeout(() => {
         setIsSuccessfullyAdded(false);
-      }, 1500);
+
+        nav('/predmeti');
+      }, 2000);
     }
 
     return () => {
@@ -68,7 +71,9 @@ const PredmetForma = () => {
     if (isSuccessfullyModified) {
       timeout2 = setTimeout(() => {
         setIsSuccessfullyModified(false);
-      }, 1500);
+
+        nav('/predmeti');
+      }, 2000);
     }
 
     return () => {
@@ -113,10 +118,10 @@ const PredmetForma = () => {
         'Šifra predmeta ne sme biti prazna!',
       ]);
       isValid = false;
-    } else if (sifraPredmetaInputRef.current.value.trim().length > 10) {
+    } else if (sifraPredmetaInputRef.current.value.trim().length > 25) {
       updateInvalidSifraPredmeta((draft) => [
         true,
-        'Šifra predmeta može imati maksimalno 10 karaktera!',
+        'Šifra predmeta može imati maksimalno 25 karaktera!',
       ]);
       isValid = false;
     }
@@ -127,10 +132,10 @@ const PredmetForma = () => {
         'Opis predmeta ne sme biti prazan!',
       ]);
       isValid = false;
-    } else if (opisPredmetaInputRef.current.value.trim().length > 20) {
+    } else if (opisPredmetaInputRef.current.value.trim().length > 35) {
       updateInvalidOpisPredmeta((draft) => [
         true,
-        'Opis predmeta može imati maksimalno 20 karaktera!',
+        'Opis predmeta može imati maksimalno 35 karaktera!',
       ]);
       isValid = false;
     }
@@ -227,6 +232,7 @@ const PredmetForma = () => {
           label='Naziv predmeta'
           variant='outlined'
           color='secondary'
+          required
           inputRef={nazivPredmetaInputRef}
           onFocus={() => updateInvalidNazivPredmeta((draft) => [false, null])}
           error={invalidNazivPredmeta[0]}
@@ -258,6 +264,7 @@ const PredmetForma = () => {
           label='Šifra predmeta'
           variant='outlined'
           color='secondary'
+          required
           inputRef={sifraPredmetaInputRef}
           onFocus={() => updateInvalidSifraPredmeta((draft) => [false, null])}
           error={invalidSifraPredmeta[0]}
@@ -289,6 +296,7 @@ const PredmetForma = () => {
           label='Opis predmeta'
           variant='outlined'
           color='secondary'
+          required
           inputRef={opisPredmetaInputRef}
           onFocus={() => updateInvalidOpisPredmeta((draft) => [false, null])}
           error={invalidOpisPredmeta[0]}
@@ -321,6 +329,7 @@ const PredmetForma = () => {
           label='Nedeljni fond časova'
           variant='outlined'
           color='secondary'
+          required
           type='number'
           inputRef={nedeljniFondCasovaInputRef}
           onFocus={() =>
@@ -374,7 +383,7 @@ const PredmetForma = () => {
               fontFamily: globalCtx.fontFamilyValue,
               borderRadius: '15px',
             }}
-            disabled={globalCtx.isLoggedInValue ? false : true}
+            // disabled={globalCtx.isLoggedInValue ? false : true}
           >
             Odustani
           </Button>
@@ -393,7 +402,7 @@ const PredmetForma = () => {
               fontFamily: globalCtx.fontFamilyValue,
               borderRadius: '15px',
             }}
-            disabled={globalCtx.isLoggedInValue ? false : true}
+            // disabled={globalCtx.isLoggedInValue ? false : true}
           >
             {location.state.isEditMode ? 'Izmeni' : 'Dodaj'}
           </Button>

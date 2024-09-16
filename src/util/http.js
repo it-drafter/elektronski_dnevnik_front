@@ -91,3 +91,56 @@ export const getUcenici = async (token) => {
 
   return response;
 };
+
+export const postUcenici = async (token, payload) => {
+  console.log('payload', payload);
+  const response = await axios.post(
+    'http://localhost:8080/dnevnik/ucenici',
+    payload,
+    {
+      headers: { Authorization: token },
+    }
+  );
+
+  return response;
+};
+
+export const putUcenici = async (token, payload, idUcenika) => {
+  console.log('payload', payload);
+  const response = await axios.put(
+    `http://localhost:8080/dnevnik/ucenici/${idUcenika}`,
+    payload,
+    {
+      headers: { Authorization: token },
+    }
+  );
+
+  return response;
+};
+
+export const deleteUcenici = async (token, idUcenika) => {
+  const response = await axios.delete(
+    `http://localhost:8080/dnevnik/ucenici/${idUcenika}`,
+    {
+      headers: { Authorization: token },
+    }
+  );
+
+  return response;
+};
+
+export const getOdeljenja = async (token) => {
+  const response = await axios.get('http://localhost:8080/dnevnik/odeljenja', {
+    headers: { Authorization: token },
+  });
+
+  return response;
+};
+
+export const getRoditelji = async (token) => {
+  const response = await axios.get('http://localhost:8080/dnevnik/roditelji', {
+    headers: { Authorization: token },
+  });
+
+  return response;
+};

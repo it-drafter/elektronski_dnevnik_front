@@ -16,7 +16,7 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material';
-import { deepPurple, orange, grey } from '@mui/material/colors';
+import { deepPurple, grey } from '@mui/material/colors';
 import { getRukovanjeOpen } from '../util/http';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 

@@ -12,9 +12,10 @@ import Predmeti from './pages/Predmeti';
 import PredmetiPureCss from './pages/PredmetiPureCss';
 import Ucenici from './pages/Ucenici';
 import InfoPrijava from './pages/InfoPrijava';
-import { getPredmeti } from './util/http';
+import { getPredmeti, getUcenici } from './util/http';
 import { getToken } from './util/browserStorage';
 import PredmetForma from './pages/PredmetForma';
+import UcenikForma from './pages/UcenikForma';
 
 const authStore = createStore({
   authName: '_auth',
@@ -23,13 +24,52 @@ const authStore = createStore({
   // cookieSecure: window.location.protocol === 'http:',
 });
 
-const loadPredmeti = async (request) => {
+// const loadPredmeti = async (request) => {
+//   {
+//     let url = new URL(request.url);
+//     let q = url.searchParams.get('q');
+
+//     if (getToken()) {
+//       const response = await getPredmeti('Bearer ' + getToken());
+
+//       if (!q || q === '') {
+//         return response.data;
+//       } else {
+//         // console.log('pretrazi predmete', q);
+
+//         return response.data.filter((v) => {
+//           let qq = q.toLowerCase();
+
+//           let r =
+//             v.nazivPredmeta.toLowerCase().includes(qq) ||
+//             v.opisPredmeta.toLowerCase().includes(qq);
+
+//           // console.log(r);
+
+//           return r;
+//         });
+//       }
+//     }
+
+//     return null;
+//   }
+// };
+
+const loadData = async (request, entity) => {
   {
     let url = new URL(request.url);
     let q = url.searchParams.get('q');
 
     if (getToken()) {
-      const response = await getPredmeti('Bearer ' + getToken());
+      let response;
+
+      if (entity === 'predmeti') {
+        response = await getPredmeti('Bearer ' + getToken());
+      }
+
+      if (entity === 'ucenici') {
+        response = await getUcenici('Bearer ' + getToken());
+      }
 
       if (!q || q === '') {
         return response.data;
@@ -38,11 +78,20 @@ const loadPredmeti = async (request) => {
 
         return response.data.filter((v) => {
           let qq = q.toLowerCase();
+          let r;
 
-          let r =
-            v.nazivPredmeta.toLowerCase().includes(qq) ||
-            v.opisPredmeta.toLowerCase().includes(qq);
+          if (entity === 'predmeti') {
+            r =
+              v.nazivPredmeta.toLowerCase().includes(qq) ||
+              v.opisPredmeta.toLowerCase().includes(qq);
+          }
 
+          if (entity === 'ucenici') {
+            r =
+              v.jmbg.toLowerCase().includes(qq) ||
+              v.korisnik.ime.toLowerCase().includes(qq) ||
+              v.korisnik.prezime.toLowerCase().includes(qq);
+          }
           // console.log(r);
 
           return r;
@@ -81,7 +130,7 @@ const router = createBrowserRouter([
         ),
         loader: ({ request }) => {
           console.log(request);
-          return loadPredmeti(request);
+          return loadData(request, 'predmeti');
         },
       },
       {
@@ -92,7 +141,7 @@ const router = createBrowserRouter([
           </RequireAuth>
         ),
         loader: ({ request }) => {
-          return loadPredmeti(request);
+          return loadData(request, 'predmeti');
         },
       },
       {
@@ -102,12 +151,24 @@ const router = createBrowserRouter([
             <Ucenici />
           </RequireAuth>
         ),
+        loader: ({ request }) => {
+          console.log(request);
+          return loadData(request, 'ucenici');
+        },
       },
       {
         path: 'predmet-forma',
         element: (
           <RequireAuth fallbackPath={'/infoprijava'}>
             <PredmetForma />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: 'ucenik-forma',
+        element: (
+          <RequireAuth fallbackPath={'/infoprijava'}>
+            <UcenikForma />
           </RequireAuth>
         ),
       },

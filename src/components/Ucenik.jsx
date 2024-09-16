@@ -12,9 +12,9 @@ import GlobalContext from '../context/global-context';
 import useAuthUser from 'react-auth-kit/hooks/useAuthUser';
 import { useNavigate } from 'react-router-dom';
 import { getToken } from '../util/browserStorage';
-import { deletePredmeti } from '../util/http';
+import { deleteUcenici } from '../util/http';
 
-const Predmet = ({ predmet, fetcherFun }) => {
+const Ucenik = ({ ucenik, fetcherFun }) => {
   const globalCtx = useContext(GlobalContext);
   const auth = useAuthUser();
   const nav = useNavigate();
@@ -24,7 +24,7 @@ const Predmet = ({ predmet, fetcherFun }) => {
       variant='outlined'
       sx={{
         width: '300px',
-        height: '250px',
+        height: '400px',
         backgroundColor: '#0f1214',
         color: '#9575cd',
         border: '1px solid #9575cd',
@@ -46,7 +46,7 @@ const Predmet = ({ predmet, fetcherFun }) => {
           component='div'
           sx={{ fontFamily: globalCtx.fontFamilyValue, textAlign: 'center' }}
         >
-          {predmet.nazivPredmeta}
+          {`${ucenik.korisnik.ime} ${ucenik.korisnik.prezime}`}
         </Typography>
         <Typography
           variant='body2'
@@ -56,7 +56,7 @@ const Predmet = ({ predmet, fetcherFun }) => {
             fontFamily: globalCtx.fontFamilyValue,
           }}
         >
-          {predmet.sifraPredmeta}
+          JMBG: {ucenik.jmbg}
         </Typography>
         <Typography
           variant='body2'
@@ -66,13 +66,33 @@ const Predmet = ({ predmet, fetcherFun }) => {
             fontFamily: globalCtx.fontFamilyValue,
           }}
         >
-          Nedeljno časova: {predmet.nedeljniFondCasova}
+          Razred/Odeljenje:{' '}
+          {ucenik?.odeljenje?.oznakaOdeljenja
+            ? `${ucenik?.odeljenje?.razred?.oznakaRazreda}${ucenik?.odeljenje?.oznakaOdeljenja}`
+            : 'Nema podatka'}
         </Typography>
         <Typography
           sx={{ fontFamily: globalCtx.fontFamilyValue }}
           variant='caption'
         >
-          {predmet.opisPredmeta}
+          Adresa: {ucenik.korisnik.adresaStanovanja} <br />
+          Telefon: {ucenik.korisnik.brojTelefona} <br />
+          Korisničko ime: {ucenik.korisnik.korisnickoIme} <br />
+          <br />
+          Roditelj:{' '}
+          {ucenik?.roditelj?.korisnik?.prezime
+            ? `${ucenik?.roditelj?.korisnik?.ime} ${ucenik?.roditelj?.korisnik?.prezime}`
+            : 'Nema podatka'}{' '}
+          <br />
+          Email roditelja:{' '}
+          {ucenik?.roditelj?.emailAdresa
+            ? ucenik?.roditelj?.emailAdresa
+            : 'Nema podatka'}{' '}
+          <br />
+          Telefon roditelja:{' '}
+          {ucenik?.roditelj?.korisnik?.brojTelefona
+            ? ucenik?.roditelj?.korisnik?.brojTelefona
+            : 'Nema podatka'}
         </Typography>
       </CardContent>
       {auth?.role === 'ROLA_ADMINISTRATOR' && (
@@ -86,10 +106,12 @@ const Predmet = ({ predmet, fetcherFun }) => {
           <Button variant='text' sx={{ borderRadius: '15px' }}>
             <EditIcon
               sx={{ color: '#9575cd' }}
-              onClick={(e) =>
-                nav('/predmet-forma', {
-                  state: { isEditMode: true, predmet: predmet },
-                })
+              onClick={
+                (e) =>
+                  nav('/ucenik-forma', {
+                    state: { isEditMode: true, ucenik: ucenik },
+                  })
+                // console.log('click edit ucenik')
               }
             />
           </Button>
@@ -98,8 +120,9 @@ const Predmet = ({ predmet, fetcherFun }) => {
             <DeleteIcon
               sx={{ color: '#9575cd' }}
               onClick={async (e) => {
-                await deletePredmeti('Bearer ' + getToken(), predmet.id);
+                await deleteUcenici('Bearer ' + getToken(), ucenik.id);
                 fetcherFun.load();
+                // console.log('click delete ucenik');
               }}
             />
           </Button>
@@ -109,4 +132,4 @@ const Predmet = ({ predmet, fetcherFun }) => {
   );
 };
 
-export default Predmet;
+export default Ucenik;
