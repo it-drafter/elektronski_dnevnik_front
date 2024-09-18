@@ -312,27 +312,23 @@ const UcenikForma = () => {
   };
 
   const handleCloseOdeljenje = (event, reason) => {
-    if (reason !== 'backdropClick') {
-      setOpenOdeljenje(false);
-
-      if (reason === 'cancel') {
-        setOdeljenje(
-          location.state.isEditMode ? location.state.ucenik.odeljenje.id : ''
-        );
-      }
+    if (reason === 'cancel' || reason === 'backdropClick') {
+      setOdeljenje(
+        location.state.isEditMode ? location.state.ucenik.odeljenje.id : ''
+      );
     }
+
+    setOpenOdeljenje(false);
   };
 
   const handleCloseRoditelj = (event, reason) => {
-    if (reason !== 'backdropClick') {
-      setOpenRoditelj(false);
-
-      if (reason === 'cancel') {
-        setRoditelj(
-          location.state.isEditMode ? location.state.ucenik.roditelj.id : ''
-        );
-      }
+    if (reason === 'cancel' || reason === 'backdropClick') {
+      setRoditelj(
+        location.state.isEditMode ? location.state.ucenik.roditelj.id : ''
+      );
     }
+
+    setOpenRoditelj(false);
   };
   // Select list end:
 
@@ -693,11 +689,36 @@ const UcenikForma = () => {
             open={openOdeljenje}
             onClose={handleCloseOdeljenje}
           >
-            <DialogTitle>Izaberite odeljenje</DialogTitle>
-            <DialogContent>
+            <DialogTitle
+              sx={{
+                color: '#9575cd',
+                backgroundColor: '#0f1214',
+                border: '2px solid #9575cd',
+                borderBottomWidth: '0',
+              }}
+            >
+              Izaberite odeljenje
+            </DialogTitle>
+            <DialogContent
+              sx={{
+                backgroundColor: '#0f1214',
+                border: '2px solid #9575cd',
+                padding: '24px!important',
+              }}
+            >
               <Box component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                <FormControl sx={{ m: 1, minWidth: 120 }}>
-                  <InputLabel id='odeljenje-label' color='secondary'>
+                <FormControl
+                  sx={{
+                    m: 1,
+                    minWidth: 350,
+                    '& .MuiSvgIcon-root': { color: '#9575cd' },
+                    '& .MuiSelect-select': {
+                      display: 'flex',
+                      justifyContent: 'center',
+                    },
+                  }}
+                >
+                  <InputLabel id='odeljenje-label' style={{ color: '#9575cd' }}>
                     Odeljenje
                   </InputLabel>
                   <Select
@@ -705,17 +726,35 @@ const UcenikForma = () => {
                     id='dialog-odeljenje'
                     value={odeljenje}
                     onChange={handleChangeOdeljenje}
-                    input={
-                      <OutlinedInput color='secondary' label='Odeljenje' />
-                    }
+                    input={<OutlinedInput color='0' label='Odeljenje' />}
+                    sx={{
+                      color: '#9575cd',
+                    }}
                   >
-                    <MenuItem value={''}>
-                      <em>Nedefinisano</em>
+                    <MenuItem
+                      sx={{
+                        color: '#9575cd',
+                        backgroundColor: '#0f1214',
+                        display: 'flex',
+                        justifyContent: 'center',
+                      }}
+                      value={''}
+                    >
+                      Nedefinisano
                     </MenuItem>
 
                     {odeljenjaList.map((el) => {
                       return (
-                        <MenuItem key={el.id} value={el.id}>
+                        <MenuItem
+                          key={el.id}
+                          value={el.id}
+                          sx={{
+                            backgroundColor: '#0f1214',
+                            color: '#9575cd',
+                            display: 'flex',
+                            justifyContent: 'center',
+                          }}
+                        >
                           {`${el.razred.oznakaRazreda}${el.oznakaOdeljenja}`}
                         </MenuItem>
                       );
@@ -725,12 +764,18 @@ const UcenikForma = () => {
               </Box>
             </DialogContent>
             <DialogActions
-              sx={{ display: 'flex', justifyContent: 'space-between' }}
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                backgroundColor: '#0f1214',
+                border: '2px solid #9575cd',
+                borderTopWidth: '0',
+              }}
             >
               <Button
                 onClick={(event) => handleCloseOdeljenje(event, 'cancel')}
                 sx={{
-                  color: '#000000',
+                  color: '#9575cd',
                   fontFamily: globalCtx.fontFamilyValue,
                 }}
               >
@@ -739,7 +784,7 @@ const UcenikForma = () => {
               <Button
                 onClick={(event) => handleCloseOdeljenje(event, 'ok')}
                 sx={{
-                  color: '#000000',
+                  color: '#9575cd',
                   fontFamily: globalCtx.fontFamilyValue,
                 }}
               >
@@ -786,11 +831,36 @@ const UcenikForma = () => {
             open={openRoditelj}
             onClose={handleCloseRoditelj}
           >
-            <DialogTitle>Izaberite roditelja</DialogTitle>
-            <DialogContent>
+            <DialogTitle
+              sx={{
+                color: '#9575cd',
+                backgroundColor: '#0f1214',
+                border: '2px solid #9575cd',
+                borderBottomWidth: '0',
+              }}
+            >
+              Izaberite roditelja
+            </DialogTitle>
+            <DialogContent
+              sx={{
+                backgroundColor: '#0f1214',
+                border: '2px solid #9575cd',
+                padding: '24px!important',
+              }}
+            >
               <Box component='form' sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                <FormControl sx={{ m: 1, minWidth: 120 }}>
-                  <InputLabel id='roditelj-label' color='secondary'>
+                <FormControl
+                  sx={{
+                    m: 1,
+                    minWidth: 350,
+                    '& .MuiSvgIcon-root': { color: '#9575cd' },
+                    '& .MuiSelect-select': {
+                      display: 'flex',
+                      justifyContent: 'center',
+                    },
+                  }}
+                >
+                  <InputLabel id='roditelj-label' style={{ color: '#9575cd' }}>
                     Roditelj
                   </InputLabel>
                   <Select
@@ -798,15 +868,35 @@ const UcenikForma = () => {
                     id='dialog-roditelj'
                     value={roditelj}
                     onChange={handleChangeRoditelj}
-                    input={<OutlinedInput color='secondary' label='Roditelj' />}
+                    input={<OutlinedInput color='0' label='Roditelj' />}
+                    sx={{
+                      color: '#9575cd',
+                    }}
                   >
-                    <MenuItem value={''}>
-                      <em>Nedefinisano</em>
+                    <MenuItem
+                      sx={{
+                        color: '#9575cd',
+                        backgroundColor: '#0f1214',
+                        display: 'flex',
+                        justifyContent: 'center',
+                      }}
+                      value={''}
+                    >
+                      Nedefinisano
                     </MenuItem>
 
                     {roditeljiList.map((el) => {
                       return (
-                        <MenuItem key={el.id} value={el.id}>
+                        <MenuItem
+                          key={el.id}
+                          value={el.id}
+                          sx={{
+                            backgroundColor: '#0f1214',
+                            color: '#9575cd',
+                            display: 'flex',
+                            justifyContent: 'center',
+                          }}
+                        >
                           {`${el?.korisnik?.ime} ${el?.korisnik?.prezime}`}
                         </MenuItem>
                       );
@@ -816,12 +906,18 @@ const UcenikForma = () => {
               </Box>
             </DialogContent>
             <DialogActions
-              sx={{ display: 'flex', justifyContent: 'space-between' }}
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                backgroundColor: '#0f1214',
+                border: '2px solid #9575cd',
+                borderTopWidth: '0',
+              }}
             >
               <Button
                 onClick={(event) => handleCloseRoditelj(event, 'cancel')}
                 sx={{
-                  color: '#000000',
+                  color: '#9575cd',
                   fontFamily: globalCtx.fontFamilyValue,
                 }}
               >
@@ -830,7 +926,7 @@ const UcenikForma = () => {
               <Button
                 onClick={(event) => handleCloseRoditelj(event, 'ok')}
                 sx={{
-                  color: '#000000',
+                  color: '#9575cd',
                   fontFamily: globalCtx.fontFamilyValue,
                 }}
               >

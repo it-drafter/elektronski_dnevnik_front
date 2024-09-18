@@ -178,3 +178,7 @@ footer .back-to-top {
   height: 50px;
   background-color: transparent;
 }
+
+.MuiList-root {
+  background-color: #0f1214;
+}

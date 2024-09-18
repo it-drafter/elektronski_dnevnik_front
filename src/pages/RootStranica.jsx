@@ -63,7 +63,7 @@ const RootStranica = ({ children }) => {
     return (
       <div className='whole-page-flex-container'>
         <Box sx={{ display: 'flex' }}>
-          <CircularProgress />
+          <CircularProgress sx={{ color: '#9575cd' }} />
         </Box>
       </div>
     );
@@ -116,6 +116,7 @@ const RootStranica = ({ children }) => {
                 </ListItemButton>
               </ListItem>
             )}
+            {/* Comment this out to remove the pure css component - start */}
             {globalCtx.isLoggedInValue && (
               <ListItem>
                 <ListItemButton
@@ -145,6 +146,7 @@ const RootStranica = ({ children }) => {
                 </ListItemButton>
               </ListItem>
             )}
+            {/* Comment this out to remove the pure css component - end */}
             {globalCtx.isLoggedInValue &&
               (auth?.role === 'ROLA_ADMINISTRATOR' ||
                 auth?.role === 'ROLA_NASTAVNIK') && (
