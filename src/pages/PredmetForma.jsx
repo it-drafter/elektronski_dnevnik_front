@@ -56,7 +56,7 @@ const PredmetForma = () => {
         setIsSuccessfullyAdded(false);
 
         nav('/predmeti');
-      }, 2000);
+      }, 1000);
     }
 
     return () => {
@@ -72,7 +72,7 @@ const PredmetForma = () => {
         setIsSuccessfullyModified(false);
 
         nav('/predmeti');
-      }, 2000);
+      }, 1000);
     }
 
     return () => {

@@ -84,7 +84,13 @@ const UcenikForma = () => {
   const [odeljenje, setOdeljenje] = useState(
     location.state.isEditMode ? location.state.ucenik.odeljenje.id : ''
   );
+  const [odeljenjeToSubmit, setOdeljenjeToSubmit] = useState(
+    location.state.isEditMode ? location.state.ucenik.odeljenje.id : ''
+  );
   const [roditelj, setRoditelj] = useState(
+    location.state.isEditMode ? location.state.ucenik.roditelj.id : ''
+  );
+  const [roditeljToSubmit, setRoditeljToSubmit] = useState(
     location.state.isEditMode ? location.state.ucenik.roditelj.id : ''
   );
 
@@ -102,7 +108,7 @@ const UcenikForma = () => {
         setIsSuccessfullyAdded(false);
 
         nav('/ucenici');
-      }, 2000);
+      }, 1000);
     }
 
     return () => {
@@ -118,7 +124,7 @@ const UcenikForma = () => {
         setIsSuccessfullyModified(false);
 
         nav('/ucenici');
-      }, 2000);
+      }, 1000);
     }
 
     return () => {
@@ -313,21 +319,31 @@ const UcenikForma = () => {
 
   const handleCloseOdeljenje = (event, reason) => {
     if (reason === 'cancel' || reason === 'backdropClick') {
-      setOdeljenje(
-        location.state.isEditMode ? location.state.ucenik.odeljenje.id : ''
-      );
+      // setOdeljenje(
+      //   location.state.isEditMode ? location.state.ucenik.odeljenje.id : ''
+      // );
+
+      setOdeljenje(odeljenjeToSubmit);
+      setOpenOdeljenje(false);
+      return;
     }
 
+    setOdeljenjeToSubmit(odeljenje);
     setOpenOdeljenje(false);
   };
 
   const handleCloseRoditelj = (event, reason) => {
     if (reason === 'cancel' || reason === 'backdropClick') {
-      setRoditelj(
-        location.state.isEditMode ? location.state.ucenik.roditelj.id : ''
-      );
+      // setRoditelj(
+      //   location.state.isEditMode ? location.state.ucenik.roditelj.id : ''
+      // );
+
+      setRoditelj(roditeljToSubmit);
+      setOpenRoditelj(false);
+      return;
     }
 
+    setRoditeljToSubmit(roditelj);
     setOpenRoditelj(false);
   };
   // Select list end:
@@ -381,7 +397,9 @@ const UcenikForma = () => {
       korisnickoImeInputRef.current.value = '';
       lozinkaInputRef.current.value = '';
       setOdeljenje('');
+      setOdeljenjeToSubmit('');
       setRoditelj('');
+      setRoditeljToSubmit('');
 
       location.state.isEditMode
         ? setIsSuccessfullyModified(true)
@@ -673,14 +691,16 @@ const UcenikForma = () => {
             onFocus={() => setInvalidOdeljenje(false)}
           >
             Odeljenje{''}
-            {odeljenje
+            {odeljenjeToSubmit
               ? `: ${
-                  odeljenjaList.find((el) => el.id === odeljenje)?.razred
-                    .oznakaRazreda
+                  odeljenjaList.find((el) => el.id === odeljenjeToSubmit)
+                    ?.razred.oznakaRazreda
                 }${
-                  odeljenjaList.find((el) => el.id === odeljenje)
+                  odeljenjaList.find((el) => el.id === odeljenjeToSubmit)
                     ?.oznakaOdeljenja
                 }`
+              : invalidOdeljenje
+              ? ' *'
               : ''}
           </Button>
 
@@ -816,13 +836,16 @@ const UcenikForma = () => {
             onFocus={() => setInvalidRoditelj(false)}
           >
             Roditelj{''}
-            {roditelj
+            {roditeljToSubmit
               ? `: ${
-                  roditeljiList.find((el) => el.id === roditelj)?.korisnik?.ime
+                  roditeljiList.find((el) => el.id === roditeljToSubmit)
+                    ?.korisnik?.ime
                 } ${
-                  roditeljiList.find((el) => el.id === roditelj)?.korisnik
-                    ?.prezime
+                  roditeljiList.find((el) => el.id === roditeljToSubmit)
+                    ?.korisnik?.prezime
                 }`
+              : invalidRoditelj
+              ? ' *'
               : ''}
           </Button>
 
