@@ -93,6 +93,7 @@ const UcenikForma = () => {
   const [roditeljToSubmit, setRoditeljToSubmit] = useState(
     location.state.isEditMode ? location.state.ucenik.roditelj.id : ''
   );
+  const [errorMsg, setErrorMsg] = useState(false);
 
   useEffect(() => {
     if (auth?.role === 'ROLA_ADMINISTRATOR') {
@@ -248,11 +249,11 @@ const UcenikForma = () => {
       isValid = false;
     } else if (
       korisnickoImeInputRef.current.value.trim().length > 25 ||
-      korisnickoImeInputRef.current.value.trim().length < 8
+      korisnickoImeInputRef.current.value.trim().length < 4
     ) {
       updateInvalidKorisnickoIme((draft) => [
         true,
-        'Korisničko ime mora imati između 8 i 25 karaktera!',
+        'Korisničko ime mora imati između 4 i 25 karaktera!',
       ]);
       isValid = false;
     }
@@ -319,10 +320,6 @@ const UcenikForma = () => {
 
   const handleCloseOdeljenje = (event, reason) => {
     if (reason === 'cancel' || reason === 'backdropClick') {
-      // setOdeljenje(
-      //   location.state.isEditMode ? location.state.ucenik.odeljenje.id : ''
-      // );
-
       setOdeljenje(odeljenjeToSubmit);
       setOpenOdeljenje(false);
       return;
@@ -334,10 +331,6 @@ const UcenikForma = () => {
 
   const handleCloseRoditelj = (event, reason) => {
     if (reason === 'cancel' || reason === 'backdropClick') {
-      // setRoditelj(
-      //   location.state.isEditMode ? location.state.ucenik.roditelj.id : ''
-      // );
-
       setRoditelj(roditeljToSubmit);
       setOpenRoditelj(false);
       return;
@@ -360,10 +353,7 @@ const UcenikForma = () => {
           adresaStanovanja: adresaStanovanjaInputRef.current.value.trim(),
           brojTelefona: brojTelefonaInputRef.current.value.trim(),
           korisnickoIme: korisnickoImeInputRef.current.value.trim(),
-          lozinka:
-            lozinkaInputRef.current.value.trim() === 0
-              ? null
-              : lozinkaInputRef.current.value.trim().length === 0,
+          lozinka: lozinkaInputRef.current.value.trim(),
         },
         odeljenje: {
           id: odeljenje,
@@ -374,18 +364,21 @@ const UcenikForma = () => {
       };
 
       if (getToken()) {
-        let response;
+        try {
+          if (!location.state.isEditMode) {
+            await postUcenici('Bearer ' + getToken(), payload);
+          }
 
-        if (!location.state.isEditMode) {
-          response = await postUcenici('Bearer ' + getToken(), payload);
-        }
-
-        if (location.state.isEditMode) {
-          response = await putUcenici(
-            'Bearer ' + getToken(),
-            payload,
-            location.state.ucenik.id
-          );
+          if (location.state.isEditMode) {
+            await putUcenici(
+              'Bearer ' + getToken(),
+              payload,
+              location.state.ucenik.id
+            );
+          }
+        } catch (err) {
+          setErrorMsg(err.message);
+          return;
         }
       }
 
@@ -409,6 +402,28 @@ const UcenikForma = () => {
 
   if (!hasPermission) {
     return <section>Nemate ovlašćenje da pristupite ovoj stranici.</section>;
+  }
+
+  if (errorMsg) {
+    return (
+      <div>
+        <p>Greška: {errorMsg}</p>
+
+        <Button
+          variant='outlined'
+          onClick={() => {
+            setErrorMsg(null);
+          }}
+          sx={{
+            color: deepPurple[300],
+            fontFamily: { fontFamily: globalCtx.fontFamilyValue },
+            mt: '20px',
+          }}
+        >
+          Nazad
+        </Button>
+      </div>
+    );
   }
 
   return (

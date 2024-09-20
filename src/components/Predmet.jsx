@@ -69,7 +69,10 @@ const Predmet = ({ predmet, fetcherFun }) => {
           Nedeljno časova: {predmet.nedeljniFondCasova}
         </Typography>
         <Typography
-          sx={{ fontFamily: globalCtx.fontFamilyValue }}
+          sx={{
+            fontFamily: globalCtx.fontFamilyValue,
+            textAlign: 'center',
+          }}
           variant='caption'
         >
           {predmet.opisPredmeta}

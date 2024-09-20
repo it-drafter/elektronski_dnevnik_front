@@ -229,6 +229,11 @@ const Pocetna = () => {
             helperText={
               invalidKorisnickoIme[0] ? invalidKorisnickoIme[1] : null
             }
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handlePrijava();
+              }
+            }}
             sx={{
               width: '70%',
               '& fieldset': { border: 'none' },
@@ -258,6 +263,11 @@ const Pocetna = () => {
             onFocus={() => updateInvalidLozinka((draft) => [false, null])}
             error={invalidLozinka[0]}
             helperText={invalidLozinka[0] ? invalidLozinka[1] : null}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handlePrijava();
+              }
+            }}
             sx={{
               width: '70%',
               '& fieldset': { border: 'none' },

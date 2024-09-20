@@ -172,14 +172,12 @@ const PredmetForma = () => {
       };
 
       if (getToken()) {
-        let response;
-
         if (!location.state.isEditMode) {
-          response = await postPredmeti('Bearer ' + getToken(), payload);
+          await postPredmeti('Bearer ' + getToken(), payload);
         }
 
         if (location.state.isEditMode) {
-          response = await putPredmeti(
+          await putPredmeti(
             'Bearer ' + getToken(),
             payload,
             location.state.predmet.id

@@ -6,7 +6,7 @@ const PredmetPureCss = ({ predmet }) => {
         <p>{predmet.sifraPredmeta}</p>
       </div>
 
-      <p>{predmet.opisPredmeta}</p>
+      <p className='predmet-purecss-opis-predmeta'>{predmet.opisPredmeta}</p>
 
       <p>Nedeljno časova: {predmet.nedeljniFondCasova}</p>
     </div>

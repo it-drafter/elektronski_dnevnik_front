@@ -31,18 +31,25 @@ const loadData = async (request, entity) => {
 
     if (getToken()) {
       let response;
+      try {
+        if (entity === 'predmeti') {
+          response = await getPredmeti('Bearer ' + getToken());
+        }
 
-      if (entity === 'predmeti') {
-        response = await getPredmeti('Bearer ' + getToken());
-      }
-
-      if (entity === 'ucenici') {
-        response = await getUcenici('Bearer ' + getToken());
+        if (entity === 'ucenici') {
+          response = await getUcenici('Bearer ' + getToken());
+        }
+      } catch (err) {
+        response = null;
       }
 
       if (!q || q === '') {
-        return response.data;
-      } else {
+        if (response !== null) {
+          return response.data;
+        }
+
+        return [];
+      } else if (response !== null) {
         return response.data.filter((v) => {
           let qq = q.toLowerCase();
           let r;
@@ -62,6 +69,8 @@ const loadData = async (request, entity) => {
 
           return r;
         });
+      } else {
+        return [];
       }
     }
 

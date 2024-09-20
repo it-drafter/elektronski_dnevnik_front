@@ -159,7 +159,8 @@ div.search-container {
   text-align: center;
 }
 
-.predmet-purecss-naziv-sifra > p {
+.predmet-purecss-naziv-sifra > p,
+.predmet-purecss-opis-predmeta {
   text-align: center;
 }
 
